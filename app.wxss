@@ -1,4 +1,4 @@
-/**app.wxss**/
+git push -u origin main --force/**app.wxss**/
 .container {
   height: 100%;
   display: flex;

@@ -1,0 +1,66 @@
+<view class="container">
+  <view class="page-header">
+    <text class="page-title">📖 饭饭日记</text>
+    <view class="header-tools">
+      <view class="tool-pill" bindtap="goMonthly">📊 月度回顾</view>
+      <view class="tool-pill" bindtap="goBills">💰 记账本</view>
+    </view>
+  </view>
+
+  <view class="diary-list">
+    <block wx:for="{{entries}}" wx:key="id">
+      <view class="diary-card">
+        <view class="card-header">
+          <view class="header-left">
+            <text class="diary-date">{{item.dateCN}}</text>
+            <text class="diary-time">{{item.time}}</text>
+          </view>
+          <text wx:if="{{item.orderId}}" class="from-order-tag">来自订单</text>
+        </view>
+
+        <text class="diary-title">{{item.title}}</text>
+
+        <view class="dishes-row" wx:if="{{item.dishes.length > 0}}">
+          <text class="dishes-label">🍳 今天做了：</text>
+          <text class="dishes-text">{{item.dishesText}}</text>
+        </view>
+
+        <view class="img-grid" wx:if="{{item.images.length > 0}}">
+          <block wx:for="{{item.images}}" wx:for-item="img" wx:for-index="imgIdx" wx:key="*this">
+            <view wx:if="{{brokenImages[item.id + '_' + imgIdx]}}" class="img-broken">图片已失效</view>
+            <image
+              wx:else
+              class="diary-img"
+              src="{{img}}"
+              mode="aspectFill"
+              binderror="onImageError"
+              data-id="{{item.id}}"
+              data-index="{{imgIdx}}"
+            />
+          </block>
+        </view>
+
+        <view class="diary-meta">
+          <text class="diary-amount">💰 花费 ¥{{item.amount}}</text>
+          <text class="diary-stars">❤️ 今日评分：{{item.starsText}}</text>
+        </view>
+
+        <text class="diary-remark" wx:if="{{item.remark}}">“{{item.remark}}”</text>
+
+        <view class="card-actions">
+          <text class="card-action" catchtap="goEdit" data-id="{{item.id}}">✏️ 编辑</text>
+          <text class="card-action del" catchtap="deleteEntry" data-id="{{item.id}}">🗑️ 删除</text>
+        </view>
+      </view>
+    </block>
+
+    <view wx:if="{{entries.length === 0}}" class="empty-tip">
+      <text class="empty-icon">📔</text>
+      <text>还没有饭饭日记，\n记录下今天一起吃的这顿吧~</text>
+    </view>
+    <view class="bottom-padding"></view>
+  </view>
+
+  <!-- 底部固定写日记按钮 -->
+  <view class="fab-btn" bindtap="goCreate">＋ 写一篇饭饭日记</view>
+</view>

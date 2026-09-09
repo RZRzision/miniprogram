@@ -1,0 +1,122 @@
+<view class="container">
+  <!-- 消费统计（全局口径，不随筛选变化） -->
+  <view class="stats-row">
+    <view class="stat-card">
+      <text class="stat-label">今日消费</text>
+      <text class="stat-value">¥{{stats.today}}</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-label">本月消费</text>
+      <text class="stat-value">¥{{stats.month}}</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-label">累计消费</text>
+      <text class="stat-value">¥{{stats.total}}</text>
+    </view>
+  </view>
+
+  <!-- 时间筛选 -->
+  <view class="filter-row">
+    <text class="filter-pill {{filter === 'today' ? 'active' : ''}}" bindtap="setFilter" data-filter="today">今天</text>
+    <text class="filter-pill {{filter === 'week' ? 'active' : ''}}" bindtap="setFilter" data-filter="week">本周</text>
+    <text class="filter-pill {{filter === 'month' ? 'active' : ''}}" bindtap="setFilter" data-filter="month">本月</text>
+    <text class="filter-pill {{filter === 'all' ? 'active' : ''}}" bindtap="setFilter" data-filter="all">全部</text>
+  </view>
+
+  <view class="btn-add-bill" bindtap="openForm">＋ 记一笔</view>
+
+  <!-- 筛选小计 -->
+  <view class="filter-summary" wx:if="{{filteredSummary.count > 0}}">
+    当前筛选共 {{filteredSummary.count}} 笔 · 合计 ¥{{filteredSummary.total}}
+  </view>
+
+  <!-- 按日期分组的账单列表 -->
+  <view class="bill-groups">
+    <block wx:for="{{groups}}" wx:for-item="group" wx:key="date">
+      <view class="group-header">
+        <text class="group-date">{{group.dateCN}}</text>
+        <text class="group-total">小计 ¥{{group.dayTotal}}</text>
+      </view>
+      <block wx:for="{{group.items}}" wx:for-item="bill" wx:key="id">
+        <view class="bill-item">
+          <view class="bill-info">
+            <view class="bill-title-row">
+              <text class="bill-title">{{bill.title}}</text>
+              <text class="bill-cat">{{bill.categoryIcon}} {{bill.category}}</text>
+            </view>
+            <text wx:if="{{bill.remark}}" class="bill-remark">{{bill.remark}}</text>
+            <text class="bill-time">🕒 {{bill.date}} {{bill.time}}</text>
+          </view>
+          <view class="bill-right">
+            <text class="bill-amount">¥{{bill.amount}}</text>
+            <view class="bill-actions">
+              <text class="bill-action" catchtap="editBill" data-id="{{bill.id}}">编辑</text>
+              <text class="bill-action del" catchtap="deleteBill" data-id="{{bill.id}}">删除</text>
+            </view>
+          </view>
+        </view>
+      </block>
+    </block>
+
+    <view wx:if="{{filteredSummary.count === 0}}" class="empty-tip">
+      <text class="empty-icon">🧾</text>
+      <text>{{bills.length === 0 ? '还没有记账，点击上方「记一笔」开始吧~' : '当前筛选范围内暂无账单~'}}</text>
+    </view>
+    <view class="bottom-padding"></view>
+  </view>
+
+  <!-- 新增/编辑账单弹窗 -->
+  <view wx:if="{{showForm}}" class="modal-mask" bindtap="closeForm"></view>
+  <view wx:if="{{showForm}}" class="form-modal">
+    <view class="modal-header">
+      <text class="modal-title">✏️ {{editingId ? '编辑账单' : '记一笔'}}</text>
+      <text class="close-btn" bindtap="closeForm">✕</text>
+    </view>
+
+    <view class="form-item">
+      <text class="label">分类</text>
+      <view class="cat-wrap">
+        <text
+          wx:for="{{categories}}"
+          wx:key="name"
+          class="cat-chip {{form.category === item.name ? 'active' : ''}}"
+          bindtap="selectCategory"
+          data-name="{{item.name}}"
+        >{{item.icon}} {{item.name}}</text>
+      </view>
+    </view>
+
+    <view class="form-item">
+      <text class="label">日期</text>
+      <picker mode="date" value="{{form.date}}" bindchange="onDateChange">
+        <view class="picker-value">{{form.date || '请选择日期'}} ▾</view>
+      </picker>
+    </view>
+
+    <view class="form-item">
+      <text class="label">时间</text>
+      <picker mode="time" value="{{form.time}}" bindchange="onTimeChange">
+        <view class="picker-value">{{form.time || '请选择时间'}} ▾</view>
+      </picker>
+    </view>
+
+    <view class="form-item">
+      <text class="label">名目</text>
+      <input class="input" placeholder="例如：情侣晚餐" value="{{form.title}}" bindinput="onTitleInput" />
+    </view>
+
+    <view class="form-item">
+      <text class="label">金额（元）</text>
+      <input class="input" type="digit" placeholder="例如：68" value="{{form.amount}}" bindinput="onAmountInput" />
+    </view>
+
+    <view class="form-item">
+      <text class="label">备注（可选）</text>
+      <input class="input" placeholder="例如：今晚一起吃了火锅" value="{{form.remark}}" bindinput="onRemarkInput" />
+    </view>
+
+    <view wx:if="{{form.orderId}}" class="order-link">来自订单 #{{form.orderId}} · 金额为快照，可自由修改</view>
+
+    <button class="btn-save" bindtap="saveBill">保存</button>
+  </view>
+</view>

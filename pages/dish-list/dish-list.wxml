@@ -1,0 +1,26 @@
+<view class="container">
+  <view class="list-head">
+    <text class="list-title">{{title}}（{{dishes.length}}）</text>
+    <text wx:if="{{dishes.length > 0}}" class="list-clear" bindtap="clearAll">清空</text>
+  </view>
+
+  <block wx:for="{{dishes}}" wx:key="id">
+    <view class="dl-item">
+      <view class="dl-icon">{{item.icon}}</view>
+      <view class="dl-info">
+        <text class="dl-name">{{item.name}}</text>
+        <text class="dl-meta">奖励: {{item.price}} · 月销 {{item.monthSales}} · {{item.stockText}}</text>
+      </view>
+      <view class="dl-actions">
+        <text class="dl-btn" catchtap="goDetail" data-id="{{item.id}}">详情</text>
+        <text class="dl-btn danger" catchtap="removeItem" data-id="{{item.id}}">移除</text>
+      </view>
+    </view>
+  </block>
+
+  <view wx:if="{{dishes.length === 0}}" class="empty-tip">
+    <text class="empty-icon">🗒️</text>
+    <text class="empty-text">{{emptyText}}</text>
+    <view class="btn-go-index" bindtap="goIndex">去点餐逛逛</view>
+  </view>
+</view>

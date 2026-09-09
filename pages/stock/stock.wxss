@@ -1,0 +1,313 @@
+page {
+  background-color: #f8f8f8;
+}
+
+.container {
+  padding: 24rpx 20rpx;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+
+.page-tip {
+  font-size: 22rpx;
+  color: #ff8c00;
+  background: #fff5eb;
+  border-radius: 12rpx;
+  padding: 14rpx 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.stock-item {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.04);
+}
+
+.stock-item.sold-out {
+  opacity: 0.6;
+}
+
+.stock-icon {
+  font-size: 44rpx;
+  margin-right: 18rpx;
+}
+
+.stock-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.stock-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #222222;
+}
+
+.stock-meta {
+  font-size: 20rpx;
+  color: #999999;
+  margin-top: 6rpx;
+}
+
+.stock-actions {
+  display: flex;
+  align-items: center;
+}
+
+.stock-btn {
+  width: 52rpx;
+  height: 52rpx;
+  line-height: 48rpx;
+  text-align: center;
+  border-radius: 50%;
+  background: #fff5eb;
+  border: 2rpx solid #ffd8b3;
+  color: #ff8c00;
+  font-size: 30rpx;
+  font-weight: bold;
+  box-sizing: border-box;
+}
+
+.stock-btn.plus {
+  background: #ff8c00;
+  color: #ffffff;
+  border-color: #ff8c00;
+}
+
+.stock-num {
+  min-width: 70rpx;
+  text-align: center;
+  font-size: 26rpx;
+  font-weight: bold;
+  color: #333333;
+}
+
+.sale-btn {
+  font-size: 22rpx;
+  color: #ff4d4f;
+  background: #ffeeee;
+  padding: 8rpx 18rpx;
+  border-radius: 22rpx;
+  margin-left: 14rpx;
+}
+
+.sale-btn.off {
+  color: #2e7d32;
+  background: #e8f5e9;
+}
+
+.empty-tip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 140rpx 40rpx;
+  background: #ffffff;
+  border-radius: 20rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 16rpx;
+}
+
+.empty-tip text {
+  font-size: 26rpx;
+  color: #999999;
+}
+
+/* 库存预警徽章 */
+.warn-badge {
+  font-size: 18rpx;
+  color: #e67300;
+  background: #ffefd9;
+  border-radius: 8rpx;
+  padding: 2rpx 10rpx;
+  margin-top: 6rpx;
+  align-self: flex-start;
+}
+
+
+/* ===== Global visual consistency overrides ===== */
+/* =========================================================
+ * Page-level visual normalization
+ * 仅统一视觉规格，不改变业务布局/交互。
+ * ========================================================= */
+
+/* 1. 页面基础 */
+.container {
+  padding-left: 20rpx !important;
+  padding-right: 20rpx !important;
+}
+
+/* index 是全屏点餐页，保留其特殊布局 */
+.container.headerless {}
+
+/* 2. 卡片统一：20rpx */
+.card,
+.stat-card,
+.stats-card,
+.section-card,
+.form-card,
+.list-card,
+.recipe-card,
+.review-card,
+.order-card,
+.diary-card,
+.info-card,
+.coupon-card,
+.stock-item,
+.cat-item,
+.table-card,
+.kitchen-card,
+.section-list,
+.highlight-card,
+.amount-card,
+.checkout-item,
+.summary-card,
+.rec-card,
+.menu-item,
+.float-card,
+.dash-hero-card,
+.quick-grid,
+.ds-chip,
+.month-nav,
+.filter-row,
+.search-panel {
+  border-radius: 20rpx !important;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05) !important;
+}
+
+/* 3. 输入框统一：12rpx */
+.input,
+.textarea,
+.picker-value,
+.search-input-box,
+.add-input,
+.remark-input,
+.discount-input {
+  border-radius: 12rpx !important;
+  border-width: 2rpx !important;
+  box-sizing: border-box !important;
+}
+
+/* 搜索框是唯一的长胶囊输入控件 */
+.search-input-box {
+  border-radius: 999rpx !important;
+}
+
+/* 图片统一圆角；头像/圆形图标由页面自己的 50% 保持圆形 */
+.dish-img,
+.form-img,
+.item-img,
+.rec-img,
+.hero-image,
+.img-cell,
+.diary-img {
+  border-radius: 16rpx !important;
+}
+
+/* 4. 普通按钮统一：16rpx；明确的圆形按钮不覆盖 */
+.btn-save,
+.btn-submit,
+.btn-submit-order,
+.btn-add,
+.add-btn,
+.btn-add-bill,
+.export-btn,
+.coupon-btn,
+.go-order,
+.primary {
+  border-radius: 16rpx !important;
+}
+
+/* 5. 胶囊统一 */
+.tool-pill,
+.filter-pill,
+.search-chip,
+.cat-chip,
+.ds-chip,
+.dish-chip,
+.dish-tag,
+.taste-tag,
+.table-chip,
+.back-current,
+.page-tip,
+.kitchen-remark,
+.warn-badge,
+.from-order-tag {
+  border-radius: 999rpx !important;
+}
+
+/* 6. 小型状态/删除按钮统一 */
+.cat-del,
+.dm-clear,
+.btn-delete,
+.btn-delete-order,
+.btn-cancel-order,
+.coupon-btn.use,
+.table-del {
+  border-radius: 12rpx !important;
+}
+
+/* 7. 列表内分割线统一为极细浅灰 */
+.card-header,
+.order-header,
+.dm-item,
+.checkout-item,
+.dish-item,
+.kitchen-item,
+.bill-item {
+  border-bottom-color: #f0f0f0 !important;
+}
+
+/* 8. 卡片间距统一 */
+.stat-card,
+.section-card,
+.form-card,
+.list-card,
+.recipe-card,
+.review-card,
+.order-card,
+.diary-card,
+.coupon-card,
+.stock-item,
+.cat-item,
+.table-card,
+.kitchen-card,
+.highlight-card,
+.amount-card {
+  margin-bottom: 20rpx;
+}
+
+/* 9. 页面内容不要贴边 */
+.empty-tip,
+.empty-state,
+.empty-step {
+  border-radius: 20rpx !important;
+}
+
+/* 10. 触摸态，避免按钮点击时尺寸跳动 */
+.btn-save,
+.btn-submit,
+.btn-submit-order,
+.btn-add,
+.add-btn,
+.btn-add-bill,
+.export-btn,
+.coupon-btn,
+.go-order,
+.primary,
+.tool-btn,
+.dl-btn,
+.dish-act,
+.kitchen-btn,
+.stock-btn,
+.nav-btn {
+  box-sizing: border-box;
+}

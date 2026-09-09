@@ -7,27 +7,48 @@
     <block wx:for="{{orders}}" wx:key="id">
       <view class="order-card">
         <view class="order-header">
-          <text class="order-time">🕒 {{item.time}}</text>
-          
-          <!-- 右侧操作区：删除按钮 + 状态切换按钮 -->
-          <view class="order-actions">
-            <view class="btn-delete-order" bindtap="deleteOrder" data-id="{{item.id}}">删除订单</view>
-            <view 
-              class="order-status {{item.status === '已出单' ? 'completed' : ''}}" 
-              bindtap="toggleStatus" 
-              data-id="{{item.id}}">
-              {{item.status || '已接单'}}
-            </view>
+          <view class="order-header-left">
+            <text class="order-time">🕒 {{item.time}}</text>
+            <!-- 用户端状态徽章：推进/回退由商家厨房端（管理页厨房订单）操作 -->
+            <view class="order-status status-{{item.statusCls}}">{{item.status}}</view>
           </view>
+
+          <!-- 右侧操作区：取消（仅出餐前）+ 删除 -->
+          <view class="order-actions">
+            <view wx:if="{{item.canCancel}}" class="btn-cancel-order" catchtap="cancelOrder" data-id="{{item.id}}">取消订单</view>
+            <view class="btn-delete-order" catchtap="deleteOrder" data-id="{{item.id}}">删除订单</view>
+          </view>
+        </view>
+
+        <!-- 口味备注：商家/厨房制作时可见 -->
+        <view wx:if="{{item.tasteRemark}}" class="taste-remark">
+          <text class="taste-label">【口味备注】</text>
+          <text class="taste-text">{{item.tasteRemark}}</text>
         </view>
 
         <view class="order-body">
           <block wx:for="{{item.items}}" wx:for-item="dish" wx:key="id">
             <view class="dish-row">
-              <text class="dish-name">{{dish.icon}} {{dish.name}}</text>
+              <text class="dish-name">{{dish.icon}} {{dish.name}} × {{dish.quantity}}</text>
               <text class="dish-price">奖励: {{dish.price}}</text>
             </view>
           </block>
+
+          <!-- 订单总份数统计（旧数据无 quantity 时按 1 份计） -->
+          <view class="order-total">共 {{item.totalCount}} 份</view>
+
+          <!-- 金额：结算订单显示实付，普通订单显示数值奖励合计（文案型奖励不显示） -->
+          <view wx:if="{{item.payable !== undefined || item.amount > 0}}" class="order-pay">
+            <text class="order-pay-main">💰 {{item.payable !== undefined ? '实付 ¥' + item.payable : '金额 ¥' + item.amount}}</text>
+            <text wx:if="{{item.discount > 0}}" class="order-pay-extra">（已优惠 ¥{{item.discount}}）</text>
+            <text wx:if="{{item.diningMode}}" class="order-pay-extra"> · {{item.diningMode}}{{item.diningMode === '堂食' && item.tableNo ? ' ' + item.tableNo + '号桌' : ''}}</text>
+          </view>
+        </view>
+
+        <!-- 便捷入口：记账 / 写饭饭日记（均自动带入订单信息快照） -->
+        <view class="order-tools">
+          <text class="tool-btn" catchtap="addBillFromOrder" data-id="{{item.id}}">💰 记一笔</text>
+          <text class="tool-btn diary" catchtap="writeDiaryFromOrder" data-id="{{item.id}}">📖 写日记</text>
         </view>
       </view>
     </block>

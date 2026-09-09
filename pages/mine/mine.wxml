@@ -1,0 +1,86 @@
+<view class="container">
+  <!-- 用户信息卡 -->
+  <view class="user-card">
+    <view class="avatar-wrap" bindtap="toggleAvatarPicker">
+      <text class="avatar">{{profile.avatar}}</text>
+      <text class="avatar-edit">更换</text>
+    </view>
+    <view class="user-info">
+      <view class="nickname-row" bindtap="editNickname">
+        <text class="nickname">{{profile.nickname}}</text>
+        <text class="nickname-edit">✏️</text>
+      </view>
+      <view class="level-badge">💎 {{levelName}}</view>
+    </view>
+    <view class="points-mini" bindtap="togglePoints">
+      <text class="points-num">{{points}}</text>
+      <text class="points-label">积分</text>
+    </view>
+  </view>
+
+  <!-- 头像选择 -->
+  <view class="avatar-picker" wx:if="{{showAvatarPicker}}">
+    <text class="picker-tip">点击选择喜欢的头像</text>
+    <view class="picker-row">
+      <text
+        wx:for="{{avatars}}"
+        wx:key="*this"
+        class="avatar-option {{profile.avatar === item ? 'active' : ''}}"
+        bindtap="selectAvatar"
+        data-avatar="{{item}}"
+      >{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 会员积分明细（内联展开） -->
+  <view class="points-panel" wx:if="{{showPointsPanel}}">
+    <view class="points-row"><text>当前积分</text><text class="p-strong">{{points}}</text></view>
+    <view class="points-row"><text>消费积分（每消费 1 元 +1）</text><text>{{pointsFromSpend}}</text></view>
+    <view class="points-row"><text>日记积分（每篇饭饭日记 +5）</text><text>{{pointsFromDiary}}</text></view>
+    <view class="level-bar"><view class="level-bar-inner" style="width: {{levelProgress}}%;"></view></view>
+    <text class="level-tip">{{nextLevel ? '当前 ' + levelName + ' · 距 ' + nextLevel + ' 还差一点，继续记录美食吧~' : '已达最高等级 ' + levelName + '，你就是食堂传奇！'}}</text>
+  </view>
+
+  <!-- 数据统计 -->
+  <view class="stats-card">
+    <view class="stat">
+      <text class="stat-num">{{stats.mealCount}}</text>
+      <text class="stat-label">一起吃饭次数</text>
+    </view>
+    <view class="stat">
+      <text class="stat-num">¥{{stats.totalSpend}}</text>
+      <text class="stat-label">累计消费</text>
+    </view>
+    <view class="stat">
+      <text class="stat-num">¥{{stats.avgSpend}}</text>
+      <text class="stat-label">平均每餐</text>
+    </view>
+  </view>
+  <view class="top-dish-card">
+    <text class="top-label">🍖 最常吃菜品</text>
+    <text class="top-value">{{stats.topDish}}</text>
+  </view>
+
+  <!-- 功能入口 -->
+  <view class="menu-grid">
+    <view class="menu-item" bindtap="goOrders"><text class="mi-icon">📋</text><text class="mi-name">我的订单</text></view>
+    <view class="menu-item" bindtap="goFavorites"><text class="mi-icon">❤️</text><text class="mi-name">我的收藏</text></view>
+    <view class="menu-item" bindtap="goHistory"><text class="mi-icon">🕘</text><text class="mi-name">浏览历史</text></view>
+    <view class="menu-item" bindtap="goCoupons"><text class="mi-icon">🎫</text><text class="mi-name">优惠券{{couponCount > 0 ? ' ' + couponCount : ''}}</text></view>
+    <view class="menu-item" bindtap="goBills"><text class="mi-icon">🧾</text><text class="mi-name">记账</text></view>
+    <view class="menu-item" bindtap="goDiary"><text class="mi-icon">📖</text><text class="mi-name">饭饭日记</text></view>
+    <view class="menu-item" bindtap="goReviews"><text class="mi-icon">⭐</text><text class="mi-name">我的评价</text></view>
+    <view class="menu-item" bindtap="togglePoints"><text class="mi-icon">💎</text><text class="mi-name">会员积分</text></view>
+  </view>
+
+  <!-- 商家工具 -->
+  <view class="tool-card">
+    <text class="tool-title">🏪 商家工具</text>
+    <view class="tool-row">
+      <view class="tool-btn" bindtap="goRecipe">📖 菜品做法</view>
+      <view class="tool-btn" bindtap="goManage">⚙️ 菜品管理</view>
+    </view>
+  </view>
+
+  <text class="data-note">消费与等级数据来自记账本，吃饭次数来自饭饭日记，均保存在本机</text>
+</view>

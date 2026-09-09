@@ -92,11 +92,13 @@ Component({
     back() {
       const data = this.data
       if (data.delta) {
-        wx.navigateBack({
-          delta: data.delta
-        })
+        wx.navigateBack({ delta: data.delta })
       }
       this.triggerEvent('back', { delta: data.delta }, {})
+    },
+    home() {
+      wx.switchTab({ url: '/pages/index/index' })
+      this.triggerEvent('home', {}, {})
     }
   },
 })

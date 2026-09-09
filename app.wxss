@@ -1,10 +1,117 @@
-git push -u origin main --force/**app.wxss**/
-.container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding: 200rpx 0;
+/* =========================================================
+ * 情侣深夜食堂 · Global Design System
+ * 所有页面统一使用同一套尺寸、圆角、间距与颜色。
+ * 页面专属样式可覆盖布局，但不要重新定义视觉 token。
+ * ========================================================= */
+page {
+  background: #f7f7f7;
+  color: #222222;
   box-sizing: border-box;
-} 
+}
+
+view, text, scroll-view, image, input, textarea, picker, button {
+  box-sizing: border-box;
+}
+
+.container {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* 通用卡片：所有页面保持统一 20rpx 圆角、内边距和阴影 */
+.card,
+.stat-card,
+.stats-card,
+.section-card,
+.form-card,
+.list-card,
+.recipe-card,
+.review-card,
+.order-card,
+.diary-card,
+.info-card,
+.coupon-card,
+.stock-item,
+.cat-item,
+.table-card,
+.kitchen-card,
+.section-list,
+.summary-card,
+.highlight-card,
+.amount-card,
+.checkout-item {
+  border-radius: 20rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+}
+
+/* 输入类控件统一 */
+.input,
+.textarea,
+.picker-value,
+.search-input-box,
+.add-input,
+.remark-input,
+.discount-input {
+  border: 2rpx solid #ffd8b3;
+  border-radius: 12rpx;
+  background: #fffaf5;
+}
+
+/* 主操作按钮统一 */
+.btn-save,
+.btn-submit,
+.btn-submit-order,
+.btn-add,
+.add-btn,
+.btn-add-bill,
+.export-btn,
+.coupon-btn,
+.go-order,
+.primary {
+  border-radius: 16rpx;
+}
+
+/* 标签/筛选器统一胶囊形 */
+.tool-pill,
+.filter-pill,
+.search-chip,
+.cat-chip,
+.ds-chip,
+.dish-chip,
+.dish-tag,
+.taste-tag,
+.table-chip,
+.tag,
+.back-current,
+.page-tip,
+.kitchen-remark,
+.status-badge,
+.warn-badge,
+.from-order-tag {
+  border-radius: 999rpx;
+}
+
+/* 删除/危险操作统一 */
+.danger,
+.del,
+.btn-delete,
+.btn-delete-order,
+.cat-del,
+.dm-clear,
+.table-del {
+  color: #ff4d4f;
+}
+
+/* 防止图片和长文字破坏布局 */
+image {
+  max-width: 100%;
+}
+
+text {
+  overflow-wrap: break-word;
+}
+
+/* 兼容旧页面默认容器样式 */
+.container {
+  min-height: 100vh;
+}

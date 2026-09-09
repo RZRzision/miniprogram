@@ -1,0 +1,107 @@
+<view class="container">
+  <!-- 正常态：结算 -->
+  <block wx:if="{{!loadError}}">
+    <!-- 菜品清单 -->
+    <view class="section-card">
+      <text class="section-label">🧺 结算清单</text>
+      <view wx:if="{{invalidCount > 0}}" class="invalid-banner">⚠️ {{invalidCount}} 项无法结算，将不包含在本单中</view>
+      <block wx:for="{{items}}" wx:key="id">
+        <view class="checkout-item {{item.invalid ? 'item-invalid' : ''}}">
+          <image wx:if="{{item.image}}" src="{{item.image}}" mode="aspectFill" class="item-img" />
+          <view wx:else class="item-img item-icon">{{item.icon}}</view>
+          <view class="item-info">
+            <text class="item-name">{{item.name}}</text>
+            <text class="item-price">奖励：{{item.price}}{{item.priceNum > 0 ? ' · ¥' + item.priceNum + '/份' : ''}}</text>
+            <text class="item-qty">数量 × {{item.quantity}}</text>
+            <text wx:if="{{item.invalid}}" class="item-invalid-reason">⚠️ {{item.invalidReason}}</text>
+          </view>
+          <view class="item-sub">
+            <text wx:if="{{item.invalid}}" class="item-subtotal reward">不计入</text>
+            <text wx:elif="{{item.priceNum > 0}}" class="item-subtotal">¥{{item.subtotal}}</text>
+            <text wx:else class="item-subtotal reward">奖励结算</text>
+          </view>
+        </view>
+      </block>
+    </view>
+
+    <!-- 用餐方式 -->
+    <view class="section-card">
+      <text class="section-label">🍽️ 用餐方式</text>
+      <view class="mode-row">
+        <text class="mode-btn {{diningMode === '堂食' ? 'active' : ''}}" bindtap="setDiningMode" data-mode="堂食">🍽️ 堂食</text>
+        <text class="mode-btn {{diningMode === '打包' ? 'active' : ''}}" bindtap="setDiningMode" data-mode="打包">🥡 打包</text>
+      </view>
+      <block wx:if="{{diningMode === '堂食'}}">
+        <text class="section-sub">选择桌号（可选）</text>
+        <view class="table-row">
+          <text
+            wx:for="{{tables}}"
+            wx:key="*this"
+            class="table-chip {{tableNo === item ? 'active' : ''}}"
+            bindtap="setTableNo"
+            data-no="{{item}}"
+          >{{item}}号桌</text>
+        </view>
+      </block>
+    </view>
+
+    <!-- 口味备注 -->
+    <view class="section-card">
+      <text class="section-label">📝 口味备注（本次订单整体口味）</text>
+      <view class="tag-wrap">
+        <text
+          wx:for="{{tasteTags}}"
+          wx:key="*this"
+          class="taste-tag {{tagActive[item] ? 'active' : ''}}"
+          catchtap="toggleTasteTag"
+          data-tag="{{item}}"
+        >{{item}}</text>
+      </view>
+      <input
+        class="remark-input"
+        placeholder="也可以自己写，例如：微辣，不要香菜"
+        value="{{tasteRemark}}"
+        bindinput="onRemarkInput"
+      />
+    </view>
+
+    <!-- 金额明细 -->
+    <view class="section-card amount-card">
+      <view class="amount-row">
+        <text class="amount-label">商品总件数</text>
+        <text class="amount-value">{{totalCount}} 件</text>
+      </view>
+      <view class="amount-row">
+        <text class="amount-label">商品原价总额</text>
+        <text class="amount-value">¥{{originalAmount}}</text>
+      </view>
+      <view class="amount-row">
+        <text class="amount-label">优惠金额</text>
+        <input class="discount-input" type="digit" placeholder="0" value="{{discount > 0 ? discount : ''}}" bindinput="onDiscountInput" />
+      </view>
+      <view class="amount-row payable">
+        <text class="amount-label">实际支付金额</text>
+        <text class="amount-value pay">¥{{payable}}</text>
+      </view>
+      <text class="amount-tip" wx:if="{{!hasPriced}}">本单奖励为文案形式，无需支付金额</text>
+    </view>
+
+    <view class="bottom-padding"></view>
+
+    <!-- 底部固定提交栏 -->
+    <view class="bottom-bar">
+      <view class="pay-info">
+        <text class="pay-label">实付</text>
+        <text class="pay-num">¥{{payable}}</text>
+      </view>
+      <button class="btn-submit-order" bindtap="submitOrder">{{submitting ? '提交中...' : '提交订单'}}</button>
+    </view>
+  </block>
+
+  <!-- 失效态：无结算会话 / 无勾选菜品 -->
+  <view wx:else class="error-state">
+    <text class="error-icon">🛒</text>
+    <text class="error-text">{{loadError}}</text>
+    <view class="btn-back" bindtap="goBack">返回点餐页</view>
+  </view>
+</view>

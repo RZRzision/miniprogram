@@ -1,0 +1,24 @@
+<view class="container">
+  <view class="page-head">
+    <text class="page-title">⭐ 我的评价</text>
+    <text class="page-sub">来自饭饭日记的评分记录</text>
+  </view>
+
+  <block wx:for="{{reviews}}" wx:key="id">
+    <view class="review-card">
+      <view class="review-top">
+        <text class="review-title">{{item.title}}</text>
+        <text class="review-stars">{{item.starsText}}</text>
+      </view>
+      <text class="review-date">{{item.dateCN}}</text>
+      <text wx:if="{{item.dishesText}}" class="review-dishes">🍽️ {{item.dishesText}}</text>
+      <text wx:if="{{item.remark}}" class="review-remark">“{{item.remark}}”</text>
+    </view>
+  </block>
+
+  <view wx:if="{{reviews.length === 0}}" class="empty-tip">
+    <text class="empty-icon">⭐</text>
+    <text class="empty-text">还没有评价，写一篇带评分的饭饭日记吧~</text>
+    <view class="btn-go-diary" bindtap="goDiary">去写饭饭日记</view>
+  </view>
+</view>

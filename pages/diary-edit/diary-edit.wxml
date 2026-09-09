@@ -1,0 +1,77 @@
+<view class="container">
+  <view class="form-card">
+    <view class="form-item">
+      <text class="label">日期</text>
+      <picker mode="date" value="{{form.date}}" bindchange="onDateChange">
+        <view class="picker-value">{{form.date || '请选择日期'}} ▾</view>
+      </picker>
+    </view>
+
+    <view class="form-item">
+      <text class="label">时间</text>
+      <picker mode="time" value="{{form.time}}" bindchange="onTimeChange">
+        <view class="picker-value">{{form.time || '请选择时间'}} ▾</view>
+      </picker>
+    </view>
+
+    <view class="form-item">
+      <text class="label">标题</text>
+      <input class="input" placeholder="例如：今晚一起做饭" value="{{form.title}}" bindinput="onTitleInput" />
+    </view>
+
+    <view class="form-item">
+      <text class="label">做了什么菜（可输入，也可点选下方菜品）</text>
+      <input class="input" placeholder="例如：番茄炒蛋、可乐鸡翅" value="{{form.dishesText}}" bindinput="onDishesInput" />
+      <scroll-view scroll-x class="chips-scroll" wx:if="{{menuDishes.length > 0}}">
+        <text
+          wx:for="{{menuDishes}}"
+          wx:key="name"
+          class="dish-chip {{chip.active ? 'active' : ''}}"
+          wx:for-item="chip"
+          bindtap="toggleMenuDish"
+          data-name="{{chip.name}}"
+        >{{chip.name}}</text>
+      </scroll-view>
+    </view>
+
+    <view class="form-item">
+      <text class="label">照片（最多 3 张）</text>
+      <view class="img-grid">
+        <view class="img-cell" wx:for="{{form.images}}" wx:key="*this" wx:for-index="imgIdx">
+          <image class="edit-img" src="{{item}}" mode="aspectFill" />
+          <text class="img-remove" catchtap="removeImage" data-index="{{imgIdx}}">✕</text>
+        </view>
+        <view wx:if="{{form.images.length < 3}}" class="img-add" bindtap="chooseImage">📷</view>
+      </view>
+    </view>
+
+    <view class="form-item">
+      <text class="label">花费（元，可不填）</text>
+      <input class="input" type="digit" placeholder="例如：48" value="{{form.amount}}" bindinput="onAmountInput" />
+    </view>
+
+    <view class="form-item">
+      <text class="label">今日评分（点星星）</text>
+      <view class="stars-row">
+        <text
+          wx:for="{{[1, 2, 3, 4, 5]}}"
+          wx:key="*this"
+          class="star {{item <= form.rating ? 'on' : ''}}"
+          bindtap="setRating"
+          data-value="{{item}}"
+        >★</text>
+        <text class="rating-num">{{form.rating}} 星</text>
+      </view>
+    </view>
+
+    <view class="form-item">
+      <text class="label">心情 / 备注</text>
+      <textarea class="textarea" placeholder="例如：第一次一起做饭，鸡翅有点咸，但是很好吃。" value="{{form.remark}}" bindinput="onRemarkInput" />
+    </view>
+
+    <view wx:if="{{orderId}}" class="order-link">关联订单 #{{orderId}} · 内容可自由修改</view>
+
+    <button class="btn-save" bindtap="saveDiary">保存日记</button>
+  </view>
+  <view class="bottom-padding"></view>
+</view>

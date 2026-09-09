@@ -1,0 +1,13 @@
+<view class="container">
+  <view class="page-tip">桌号将在点餐结算页「堂食」时供顾客选择</view>
+
+  <view class="table-grid">
+    <view class="table-card" wx:for="{{tables}}" wx:key="*this">
+      <text class="table-num">{{item}}号桌</text>
+      <text class="table-del" catchtap="removeTable" data-no="{{item}}">✕</text>
+    </view>
+    <view class="table-card add" bindtap="addTable">＋ 添加桌号</view>
+  </view>
+
+  <view class="bottom-tip">桌号变更即时生效，至少保留一张桌子</view>
+</view>

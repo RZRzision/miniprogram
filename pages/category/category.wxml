@@ -1,0 +1,49 @@
+<view class="container">
+  <view class="add-row">
+    <input class="add-input" placeholder="输入新分类名称，例如：夜宵" value="{{newName}}" bindinput="onNameInput" confirm-type="done" bindconfirm="addCategory" />
+    <view class="add-btn" bindtap="addCategory">添加</view>
+  </view>
+
+  <view class="cat-list">
+    <block wx:for="{{categories}}" wx:key="*this">
+      <view class="cat-item">
+        <!-- 编辑态：行内重命名 -->
+        <block wx:if="{{editingName === item}}">
+          <input class="cat-edit-input" value="{{renameValue}}" focus bindinput="onRenameInput" />
+          <text class="cat-act save" bindtap="saveRename">保存</text>
+          <text class="cat-act" bindtap="cancelRename">取消</text>
+        </block>
+        <!-- 展示态：名称 + 排序 + 编辑 + 删除 -->
+        <block wx:else>
+          <text class="cat-name">{{item}}</text>
+          <view class="cat-actions">
+            <text
+              wx:if="{{index > 0}}"
+              class="cat-move"
+              catchtap="moveCategory"
+              data-index="{{index}}"
+              data-delta="-1"
+            >↑</text>
+            <text
+              wx:if="{{index < categories.length - 1}}"
+              class="cat-move"
+              catchtap="moveCategory"
+              data-index="{{index}}"
+              data-delta="1"
+            >↓</text>
+            <text class="cat-act" catchtap="startRename" data-name="{{item}}">编辑</text>
+            <text class="cat-del" catchtap="removeCategory" data-name="{{item}}">删除</text>
+          </view>
+        </block>
+      </view>
+    </block>
+  </view>
+
+  <view wx:if="{{categories.length === 0}}" class="empty-tip">
+    <text class="empty-icon">🗂️</text>
+    <text class="empty-text">还没有自定义分类</text>
+    <view class="btn-seed" bindtap="seedDefaults">一键写入默认分类</view>
+  </view>
+
+  <text class="page-note">排序决定点餐页侧栏与管理页分类选择器的展示顺序；重命名会同步更新该分类下的菜品；分类下还有菜品时不可删除</text>
+</view>

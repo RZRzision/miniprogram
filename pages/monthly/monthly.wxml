@@ -1,0 +1,79 @@
+<view class="container">
+  <!-- 月份切换 -->
+  <view class="month-nav">
+    <view class="nav-btn" bindtap="prevMonth">‹</view>
+    <view class="month-center">
+      <text class="month-label">{{monthText}}</text>
+      <text wx:if="{{!isCurrentMonth}}" class="back-current" bindtap="backToCurrent">回到本月</text>
+    </view>
+    <view class="nav-btn" bindtap="nextMonth">›</view>
+  </view>
+
+  <block wx:if="{{hasData}}">
+    <!-- 自动总结 -->
+    <view class="summary-card">
+      <text class="summary-label">📝 本月总结</text>
+      <text class="summary-text">{{summary}}</text>
+    </view>
+
+    <!-- 统计网格 -->
+    <view class="stats-grid">
+      <view class="stat-card">
+        <text class="stat-num">{{stats.entryCount}}</text>
+        <text class="stat-label">记录次数</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-num">{{stats.activeDays}}</text>
+        <text class="stat-label">有记录天数</text>
+      </view>
+      <view class="stat-card highlight">
+        <text class="stat-num">¥{{stats.totalAmount}}</text>
+        <text class="stat-label">总花费</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-num">¥{{stats.avgAmount}}</text>
+        <text class="stat-label">平均每次</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-num">{{stats.avgRatingText}}</text>
+        <text class="stat-label">平均评分</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-num">{{stats.imageCount}}</text>
+        <text class="stat-label">上传照片</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-num">{{stats.dishTotal}}</text>
+        <text class="stat-label">记录菜品</text>
+      </view>
+    </view>
+
+    <!-- 本月亮点 -->
+    <view class="highlight-card" wx:if="{{topDish.name}}">
+      <text class="highlight-title">🍲 最常做的菜</text>
+      <text class="highlight-main">{{topDish.name}}</text>
+      <text class="highlight-sub">本月出现 {{topDish.count}} 次</text>
+    </view>
+
+    <view class="highlight-card" wx:if="{{bestEntry}}">
+      <text class="highlight-title">⭐ 评分最高</text>
+      <text class="highlight-main">{{bestEntry.title}}</text>
+      <text class="highlight-sub">{{bestEntry.dateCN}} · {{bestEntry.starsText}}</text>
+    </view>
+
+    <view class="highlight-card" wx:if="{{costliestEntry}}">
+      <text class="highlight-title">💰 花费最高</text>
+      <text class="highlight-main">{{costliestEntry.title}}</text>
+      <text class="highlight-sub">{{costliestEntry.dateCN}} · ¥{{costliestEntry.amount}}</text>
+    </view>
+  </block>
+
+  <!-- 空状态 -->
+  <view wx:else class="empty-state">
+    <text class="empty-icon">🗓️</text>
+    <text class="empty-text">{{monthText}}还没有饭饭日记，\n一起做顿饭记录下来吧~</text>
+    <view class="btn-back-diary" bindtap="goCreate">去写一篇日记</view>
+  </view>
+
+  <view class="bottom-padding"></view>
+</view>

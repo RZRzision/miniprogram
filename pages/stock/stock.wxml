@@ -1,0 +1,25 @@
+<view class="container">
+  <view class="page-tip">调整库存后，点餐页推荐区会自动排除售罄/下架菜品</view>
+
+  <block wx:for="{{dishes}}" wx:key="id">
+    <view class="stock-item {{item.soldOut ? 'sold-out' : ''}}">
+      <text class="stock-icon">{{item.icon}}</text>
+      <view class="stock-info">
+        <text class="stock-name">{{item.name}}</text>
+        <text class="stock-meta">{{item.stockText}} · {{item.onSale ? '在售中' : '已下架'}}</text>
+        <text wx:if="{{item.lowStock}}" class="warn-badge">⚠️ 库存预警</text>
+      </view>
+      <view class="stock-actions">
+        <view class="stock-btn" catchtap="changeStock" data-id="{{item.id}}" data-delta="-1">－</view>
+        <text class="stock-num">{{item.stockText}}</text>
+        <view class="stock-btn plus" catchtap="changeStock" data-id="{{item.id}}" data-delta="1">＋</view>
+        <view class="sale-btn {{item.onSale ? 'off' : ''}}" catchtap="toggleSale" data-id="{{item.id}}">{{item.onSale ? '下架' : '上架'}}</view>
+      </view>
+    </view>
+  </block>
+
+  <view wx:if="{{dishes.length === 0}}" class="empty-tip">
+    <text class="empty-icon">📦</text>
+    <text>还没有菜品，先去菜品管理添加吧~</text>
+  </view>
+</view>

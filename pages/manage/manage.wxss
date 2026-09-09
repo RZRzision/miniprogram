@@ -166,3 +166,562 @@ page {
   padding: 8rpx 20rpx;
   border-radius: 20rpx;
 }
+
+/* 厨房/商家端订单控制台 */
+.kitchen-card {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  box-sizing: border-box;
+  margin-bottom: 40rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+}
+
+.kitchen-item {
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.kitchen-item:last-child {
+  border-bottom: none;
+}
+
+.kitchen-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.kitchen-time {
+  font-size: 24rpx;
+  color: #666666;
+}
+
+.kitchen-dishes {
+  font-size: 28rpx;
+  color: #222222;
+  display: block;
+  margin-top: 10rpx;
+}
+
+.kitchen-remark {
+  font-size: 22rpx;
+  color: #ff8c00;
+  background: #fff5eb;
+  border-radius: 8rpx;
+  padding: 6rpx 14rpx;
+  display: block;
+  margin-top: 10rpx;
+}
+
+.kitchen-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 14rpx;
+}
+
+.kitchen-btn {
+  font-size: 24rpx;
+  color: #666666;
+  background: #f5f5f5;
+  padding: 8rpx 22rpx;
+  border-radius: 22rpx;
+  margin-left: 14rpx;
+}
+
+.kitchen-btn.primary {
+  color: #ffffff;
+  background: #ff8c00;
+  font-weight: 600;
+}
+
+.kitchen-btn.danger {
+  color: #ff4d4f;
+  background: #ffeeee;
+}
+
+.kitchen-empty {
+  text-align: center;
+  color: #999999;
+  font-size: 26rpx;
+  padding: 30rpx 0;
+}
+
+/* 状态徽章（与订单页同一套状态着色） */
+.order-status {
+  font-size: 22rpx;
+  font-weight: 600;
+  padding: 4rpx 18rpx;
+  border-radius: 20rpx;
+}
+
+.order-status.status-pending {
+  color: #999999;
+  background: #f0f0f0;
+}
+
+.order-status.status-accepted {
+  color: #ff8c00;
+  background: #fff5eb;
+}
+
+.order-status.status-cooking {
+  color: #e67300;
+  background: #ffefd9;
+}
+
+.order-status.status-shipped {
+  color: #2e7d32;
+  background: #e8f5e9;
+}
+
+.order-status.status-done {
+  color: #1b5e20;
+  background: #dcedc8;
+}
+
+.order-status.status-cancelled {
+  color: #ff4d4f;
+  background: #ffeeee;
+  text-decoration: line-through;
+}
+/* 经营 Dashboard */
+.dash-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.dash-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333333;
+}
+
+.dash-date {
+  font-size: 22rpx;
+  color: #999999;
+}
+
+.dash-hero {
+  display: flex;
+  margin-bottom: 16rpx;
+}
+
+.dash-hero-card {
+  flex: 1;
+  background: #ff8c00;
+  border-radius: 18rpx;
+  padding: 24rpx 0;
+  text-align: center;
+  margin-right: 14rpx;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 6rpx 18rpx rgba(255, 140, 0, 0.25);
+}
+
+.dash-hero-card:last-child {
+  margin-right: 0;
+}
+
+.dh-num {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.dh-label {
+  font-size: 20rpx;
+  color: #ffffff;
+  opacity: 0.9;
+  margin-top: 6rpx;
+}
+
+.dash-status {
+  display: flex;
+  margin-bottom: 14rpx;
+}
+
+.ds-chip {
+  flex: 1;
+  background: #ffffff;
+  border-radius: 14rpx;
+  padding: 16rpx 0;
+  text-align: center;
+  margin-right: 12rpx;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.04);
+}
+
+.ds-chip:last-child {
+  margin-right: 0;
+}
+
+.ds-num {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333333;
+}
+
+.ds-label {
+  font-size: 18rpx;
+  color: #999999;
+  margin-top: 4rpx;
+}
+
+.dash-stock {
+  display: flex;
+  margin-bottom: 20rpx;
+}
+
+.ds-chip.wide {
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 18rpx 0;
+  gap: 10rpx;
+}
+
+.ds-chip.warn .ds-num {
+  color: #ff4d4f;
+}
+
+/* 快捷入口宫格 */
+.quick-grid {
+  background: #ffffff;
+  border-radius: 18rpx;
+  padding: 18rpx 0 6rpx;
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+}
+
+.quick-item {
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14rpx 0 16rpx;
+  box-sizing: border-box;
+}
+
+.qi-icon {
+  font-size: 38rpx;
+}
+
+.qi-name {
+  font-size: 20rpx;
+  color: #333333;
+  margin-top: 8rpx;
+}
+
+/* 表单头部（编辑模式） */
+.form-head-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.cancel-edit {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+/* 菜品图片 */
+.image-row {
+  display: flex;
+  align-items: center;
+}
+
+.form-img {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 12rpx;
+  background: #fffaf5;
+  border: 2rpx dashed #ffd8b3;
+  box-sizing: border-box;
+}
+
+.add-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 52rpx;
+}
+
+.img-clear {
+  font-size: 22rpx;
+  color: #ff4d4f;
+  margin-left: 20rpx;
+}
+
+.img-tip {
+  font-size: 22rpx;
+  color: #bbbbbb;
+  margin-left: 20rpx;
+}
+
+/* 菜品列表行（编辑/上下架/删除 + 状态徽章） */
+.dish-img {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 12rpx;
+  margin-right: 16rpx;
+  flex-shrink: 0;
+}
+
+.dish-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.dish-name-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.dish-badge {
+  font-size: 18rpx;
+  border-radius: 8rpx;
+  padding: 2rpx 10rpx;
+  margin-left: 8rpx;
+}
+
+.dish-badge.danger {
+  color: #ff4d4f;
+  background: #ffeeee;
+}
+
+.dish-badge.warn {
+  color: #e67300;
+  background: #ffefd9;
+}
+
+.dish-badge.gray {
+  color: #999999;
+  background: #f0f0f0;
+}
+
+.dish-desc {
+  font-size: 20rpx;
+  color: #999999;
+  margin-top: 4rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 360rpx;
+}
+
+.dish-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-left: 12rpx;
+}
+
+.dish-act {
+  font-size: 22rpx;
+  color: #ff8c00;
+  background: #fff5eb;
+  border: 2rpx solid #ffd8b3;
+  padding: 4rpx 18rpx;
+  border-radius: 18rpx;
+  margin-top: 8rpx;
+}
+
+.dish-act.del {
+  color: #ff4d4f;
+  background: #ffeeee;
+  border-color: #ffdddd;
+}
+
+.dish-muted {
+  opacity: 0.6;
+}
+
+
+/* ===== Global visual consistency overrides ===== */
+/* =========================================================
+ * Page-level visual normalization
+ * 仅统一视觉规格，不改变业务布局/交互。
+ * ========================================================= */
+
+/* 1. 页面基础 */
+.container {
+  padding-left: 20rpx !important;
+  padding-right: 20rpx !important;
+}
+
+/* index 是全屏点餐页，保留其特殊布局 */
+.container.headerless {}
+
+/* 2. 卡片统一：20rpx */
+.card,
+.stat-card,
+.stats-card,
+.section-card,
+.form-card,
+.list-card,
+.recipe-card,
+.review-card,
+.order-card,
+.diary-card,
+.info-card,
+.coupon-card,
+.stock-item,
+.cat-item,
+.table-card,
+.kitchen-card,
+.section-list,
+.highlight-card,
+.amount-card,
+.checkout-item,
+.summary-card,
+.rec-card,
+.menu-item,
+.float-card,
+.dash-hero-card,
+.quick-grid,
+.ds-chip,
+.month-nav,
+.filter-row,
+.search-panel {
+  border-radius: 20rpx !important;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05) !important;
+}
+
+/* 3. 输入框统一：12rpx */
+.input,
+.textarea,
+.picker-value,
+.search-input-box,
+.add-input,
+.remark-input,
+.discount-input {
+  border-radius: 12rpx !important;
+  border-width: 2rpx !important;
+  box-sizing: border-box !important;
+}
+
+/* 搜索框是唯一的长胶囊输入控件 */
+.search-input-box {
+  border-radius: 999rpx !important;
+}
+
+/* 图片统一圆角；头像/圆形图标由页面自己的 50% 保持圆形 */
+.dish-img,
+.form-img,
+.item-img,
+.rec-img,
+.hero-image,
+.img-cell,
+.diary-img {
+  border-radius: 16rpx !important;
+}
+
+/* 4. 普通按钮统一：16rpx；明确的圆形按钮不覆盖 */
+.btn-save,
+.btn-submit,
+.btn-submit-order,
+.btn-add,
+.add-btn,
+.btn-add-bill,
+.export-btn,
+.coupon-btn,
+.go-order,
+.primary {
+  border-radius: 16rpx !important;
+}
+
+/* 5. 胶囊统一 */
+.tool-pill,
+.filter-pill,
+.search-chip,
+.cat-chip,
+.ds-chip,
+.dish-chip,
+.dish-tag,
+.taste-tag,
+.table-chip,
+.back-current,
+.page-tip,
+.kitchen-remark,
+.warn-badge,
+.from-order-tag {
+  border-radius: 999rpx !important;
+}
+
+/* 6. 小型状态/删除按钮统一 */
+.cat-del,
+.dm-clear,
+.btn-delete,
+.btn-delete-order,
+.btn-cancel-order,
+.coupon-btn.use,
+.table-del {
+  border-radius: 12rpx !important;
+}
+
+/* 7. 列表内分割线统一为极细浅灰 */
+.card-header,
+.order-header,
+.dm-item,
+.checkout-item,
+.dish-item,
+.kitchen-item,
+.bill-item {
+  border-bottom-color: #f0f0f0 !important;
+}
+
+/* 8. 卡片间距统一 */
+.stat-card,
+.section-card,
+.form-card,
+.list-card,
+.recipe-card,
+.review-card,
+.order-card,
+.diary-card,
+.coupon-card,
+.stock-item,
+.cat-item,
+.table-card,
+.kitchen-card,
+.highlight-card,
+.amount-card {
+  margin-bottom: 20rpx;
+}
+
+/* 9. 页面内容不要贴边 */
+.empty-tip,
+.empty-state,
+.empty-step {
+  border-radius: 20rpx !important;
+}
+
+/* 10. 触摸态，避免按钮点击时尺寸跳动 */
+.btn-save,
+.btn-submit,
+.btn-submit-order,
+.btn-add,
+.add-btn,
+.btn-add-bill,
+.export-btn,
+.coupon-btn,
+.go-order,
+.primary,
+.tool-btn,
+.dl-btn,
+.dish-act,
+.kitchen-btn,
+.stock-btn,
+.nav-btn {
+  box-sizing: border-box;
+}

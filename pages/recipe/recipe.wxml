@@ -3,13 +3,15 @@
     <text class="title">📖 大厨菜谱秘密</text>
   </view>
 
-  <!-- 1. 菜谱列表 -->
   <view class="recipe-list">
     <block wx:for="{{recipes}}" wx:key="id">
       <view class="recipe-card">
         <view class="card-header">
           <text class="recipe-title">{{item.icon}} {{item.name}}</text>
-          <view class="btn-delete" bindtap="deleteRecipe" data-id="{{item.id}}">删除</view>
+          <view class="recipe-actions">
+            <view class="btn-edit" bindtap="startEdit" data-id="{{item.id}}">编辑</view>
+            <view class="btn-delete" bindtap="deleteRecipe" data-id="{{item.id}}">删除</view>
+          </view>
         </view>
         <view class="recipe-body">
           <block wx:for="{{item.steps}}" wx:for-item="step" wx:for-index="sIdx" wx:key="*this">
@@ -18,7 +20,9 @@
               <text class="step-text">{{step}}</text>
             </view>
           </block>
+          <view wx:if="{{item.steps.length === 0}}" class="empty-step">还没有填写制作步骤</view>
         </view>
+        <view wx:if="{{item.steps.length > 0}}" class="go-order" bindtap="goOrder" data-id="{{item.id}}">去点这道菜 →</view>
       </view>
     </block>
 
@@ -26,48 +30,37 @@
       <text class="empty-icon">🍳</text>
       <text>还没有记录菜谱呢，点击右下角 + 添加吧~</text>
     </view>
-
     <view class="bottom-padding"></view>
   </view>
 
-  <!-- 2. 右下角悬浮 + 号按钮 -->
   <view class="fab-btn" bindtap="openModal">＋</view>
 
-  <!-- 3. 添加菜谱弹窗 -->
   <view wx:if="{{showModal}}" class="modal-mask" bindtap="closeModal"></view>
   <view wx:if="{{showModal}}" class="recipe-modal">
     <view class="modal-header">
-      <text class="modal-title">📝 添加新菜谱</text>
+      <text class="modal-title">📝 {{editingId !== null ? '编辑菜谱' : '添加新菜谱'}}</text>
       <text class="close-btn" bindtap="closeModal">✕</text>
     </view>
 
     <view class="form-item">
       <text class="label">菜品名称</text>
-      <input class="input" placeholder="例如：番茄炒蛋" value="{{form.name}}" bindinput="onInputName"/>
+      <input class="input" maxlength="30" placeholder="例如：番茄炒蛋" value="{{form.name}}" bindinput="onInputName"/>
     </view>
 
     <view class="form-item">
       <text class="label">选择图标</text>
       <scroll-view scroll-x class="icon-selector">
         <block wx:for="{{iconList}}" wx:key="*this">
-          <text 
-            class="icon-option {{form.icon === item ? 'selected' : ''}}" 
-            bindtap="selectIcon" 
-            data-icon="{{item}}">{{item}}</text>
+          <text class="icon-option {{form.icon === item ? 'selected' : ''}}" bindtap="selectIcon" data-icon="{{item}}">{{item}}</text>
         </block>
       </scroll-view>
     </view>
 
     <view class="form-item">
-      <text class="label">制作步骤 (换行即为一个步骤)</text>
-      <textarea 
-        class="textarea" 
-        placeholder="1. 鸡蛋打散炒熟盛出&#10;2. 番茄炒出汁水&#10;3. 倒入鸡蛋翻炒加盐" 
-        value="{{form.stepsText}}" 
-        bindinput="onInputSteps"
-      />
+      <text class="label">制作步骤（换行即为一个步骤）</text>
+      <textarea class="textarea" maxlength="3000" placeholder="1. 鸡蛋打散炒熟盛出&#10;2. 番茄炒出汁水&#10;3. 倒入鸡蛋翻炒加盐" value="{{form.stepsText}}" bindinput="onInputSteps" />
     </view>
 
-    <button class="btn-submit" bindtap="submitRecipe">保存菜谱</button>
+    <button class="btn-submit" loading="{{saving}}" disabled="{{saving}}" bindtap="saveRecipe">{{editingId !== null ? '保存修改' : '保存菜谱'}}</button>
   </view>
 </view>

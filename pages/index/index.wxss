@@ -91,6 +91,229 @@ page {
   padding: 10rpx;
 }
 
+/* 搜索历史与热门搜索 */
+.search-panel {
+  background: #ffffff;
+  padding: 20rpx 24rpx 8rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.search-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14rpx;
+}
+
+.search-label {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #666666;
+}
+
+.search-clear {
+  font-size: 22rpx;
+  color: #999999;
+}
+
+.search-chips {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 10rpx;
+}
+
+.search-chip {
+  font-size: 22rpx;
+  color: #666666;
+  background: #f5f5f5;
+  padding: 8rpx 24rpx;
+  border-radius: 24rpx;
+  margin: 0 12rpx 12rpx 0;
+}
+
+.search-chip.hot {
+  color: #ff8c00;
+  background: #fff5eb;
+  border: 2rpx solid #ffd8b3;
+}
+
+/* 搜索结果行新增展示：图片 / 描述 / 标签 / 库存 */
+.dish-img {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 12rpx;
+  margin-right: 15rpx;
+  flex-shrink: 0;
+}
+
+.dish-desc {
+  font-size: 20rpx;
+  color: #999999;
+  margin-top: 4rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 400rpx;
+}
+
+.dish-tags {
+  margin-top: 6rpx;
+}
+
+.dish-tag {
+  display: inline-block;
+  font-size: 18rpx;
+  color: #ff8c00;
+  background: #fff5eb;
+  border: 2rpx solid #ffd8b3;
+  border-radius: 12rpx;
+  padding: 0 12rpx;
+  margin-right: 8rpx;
+}
+
+.menu-item.sold-out {
+  opacity: 0.55;
+}
+
+.month-sales.sold {
+  color: #ff4d4f;
+}
+
+/* 推荐区域（横向滑动卡片，数量封顶不会无限增长） */
+.rec-area {
+  background-color: #ffffff;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.rec-section {
+  padding: 20rpx 0 4rpx;
+}
+
+.rec-header {
+  display: flex;
+  align-items: baseline;
+  padding: 0 24rpx 14rpx;
+}
+
+.rec-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333333;
+  margin-right: 14rpx;
+}
+
+.rec-sub {
+  font-size: 20rpx;
+  color: #ff8c00;
+}
+
+.rec-scroll {
+  white-space: nowrap;
+  width: 100%;
+  padding-left: 24rpx;
+  box-sizing: border-box;
+}
+
+.rec-card {
+  display: inline-block;
+  width: 280rpx;
+  background: #fffaf5;
+  border: 2rpx solid #ffd8b3;
+  border-radius: 16rpx;
+  margin-right: 20rpx;
+  overflow: hidden;
+  vertical-align: top;
+  white-space: normal;
+}
+
+.rec-img {
+  width: 100%;
+  height: 160rpx;
+  background: #fff2e8;
+  display: block;
+}
+
+.rec-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 80rpx;
+}
+
+.rec-body {
+  padding: 14rpx 16rpx 16rpx;
+}
+
+.rec-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #222222;
+  display: block;
+}
+
+.rec-desc {
+  font-size: 20rpx;
+  color: #999999;
+  display: block;
+  margin-top: 6rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.rec-tags {
+  margin-top: 8rpx;
+}
+
+.rec-tag {
+  display: inline-block;
+  font-size: 18rpx;
+  color: #ff8c00;
+  background: #fff5eb;
+  border: 2rpx solid #ffd8b3;
+  border-radius: 14rpx;
+  padding: 2rpx 12rpx;
+  margin-right: 8rpx;
+}
+
+.rec-foot {
+  display: flex;
+  align-items: center;
+  margin-top: 10rpx;
+}
+
+.rec-price {
+  font-size: 22rpx;
+  color: #ff8c00;
+  font-weight: 600;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rec-sales {
+  font-size: 18rpx;
+  color: #bbbbbb;
+  margin-right: 10rpx;
+}
+
+.rec-add {
+  width: 44rpx;
+  height: 44rpx;
+  line-height: 40rpx;
+  text-align: center;
+  border-radius: 50%;
+  background: #ff8c00;
+  color: #ffffff;
+  font-size: 30rpx;
+  font-weight: bold;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
 .main-body {
   flex: 1;
   width: 100%;
@@ -153,6 +376,13 @@ page {
   flex-direction: column;
 }
 
+/* 菜品卡片月销 */
+.month-sales {
+  font-size: 20rpx;
+  color: #999999;
+  margin-top: 4rpx;
+}
+
 .name {
   font-size: 34rpx;
   font-weight: 600;
@@ -180,10 +410,40 @@ page {
   color: #ffffff !important;
 }
 
-.btn-select.selected {
-  background-color: #ff8c00 !important;
-  color: #ffffff !important;
-  font-size: 28rpx;
+/* 数量步进器（菜单列表与购物车弹窗共用） */
+.stepper {
+  display: flex;
+  align-items: center;
+}
+
+.step-btn {
+  width: 48rpx;
+  height: 48rpx;
+  line-height: 44rpx;
+  text-align: center;
+  border-radius: 50%;
+  font-size: 30rpx;
+  font-weight: bold;
+  box-sizing: border-box;
+}
+
+.step-btn.minus {
+  background-color: #fff5eb;
+  color: #ff8c00;
+  border: 2rpx solid #ffd8b3;
+}
+
+.step-btn.plus {
+  background-color: #ff8c00;
+  color: #ffffff;
+}
+
+.step-num {
+  min-width: 56rpx;
+  text-align: center;
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #ff8c00;
 }
 
 .empty-tip {
@@ -248,6 +508,63 @@ page {
   color: #333;
 }
 
+.popup-title-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 弹窗头部操作区：全选 + 清空 */
+.popup-actions {
+  display: flex;
+  align-items: center;
+}
+
+.check-all {
+  font-size: 24rpx;
+  color: #ff8c00;
+  background: #fff5eb;
+  border: 2rpx solid #ffd8b3;
+  padding: 6rpx 18rpx;
+  border-radius: 24rpx;
+  margin-right: 16rpx;
+}
+
+/* 结算勾选框 */
+.item-check {
+  width: 44rpx;
+  height: 44rpx;
+  line-height: 44rpx;
+  text-align: center;
+  font-size: 34rpx;
+  color: #ff8c00;
+  margin-right: 8rpx;
+  flex-shrink: 0;
+}
+
+.popup-item-right {
+  display: flex;
+  align-items: center;
+}
+
+/* 单条删除 */
+.item-del {
+  font-size: 30rpx;
+  margin-right: 20rpx;
+  color: #ff4d4f;
+}
+
+/* 未勾选菜品置灰（仍保留在购物车） */
+.item-unchecked {
+  opacity: 0.45;
+}
+
+/* 数值型奖励/代价的合计展示（文案型奖励不显示） */
+.total-amount {
+  font-size: 20rpx;
+  color: #ff8c00;
+  margin-top: 4rpx;
+}
+
 .clear-btn {
   font-size: 24rpx;
   color: #888;
@@ -256,6 +573,61 @@ page {
 .popup-list {
   max-height: 400rpx;
   margin-top: 10rpx;
+}
+
+/* 口味备注 */
+.remark-block {
+  margin-top: 16rpx;
+  padding: 16rpx 0 20rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.remark-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.remark-title {
+  font-size: 26rpx;
+  font-weight: bold;
+  color: #333333;
+}
+
+.remark-hint {
+  font-size: 20rpx;
+  color: #bbbbbb;
+}
+
+.tag-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 14rpx;
+}
+
+.taste-tag {
+  font-size: 22rpx;
+  color: #666666;
+  background: #f5f5f5;
+  padding: 8rpx 20rpx;
+  border-radius: 24rpx;
+  margin: 0 12rpx 12rpx 0;
+}
+
+.taste-tag.active {
+  color: #ff8c00;
+  background: #fff5eb;
+  border: 2rpx solid #ff8c00;
+}
+
+.remark-input {
+  background: #fffaf5;
+  border: 2rpx solid #ffd8b3;
+  height: 64rpx;
+  border-radius: 12rpx;
+  padding: 0 20rpx;
+  font-size: 24rpx;
+  color: #333333;
 }
 
 .popup-item {
@@ -287,16 +659,11 @@ page {
   color: #ff8c00;
 }
 
-.btn-remove {
-  width: 44rpx;
-  height: 44rpx;
-  line-height: 40rpx;
-  text-align: center;
-  border-radius: 50%;
-  background-color: #ffeeee;
-  color: #ff4d4f;
-  font-size: 32rpx;
-  font-weight: bold;
+/* 底部悬浮栏“共 X 份”总份数提示 */
+.total-hint {
+  font-size: 22rpx;
+  color: #ff8c00;
+  margin-left: 12rpx;
 }
 
 .footer-bar {
@@ -339,4 +706,183 @@ page {
   border-radius: 35rpx;
   font-size: 28rpx;
   padding: 0 !important;
+}
+
+/* ===== Global visual consistency overrides ===== */
+/* =========================================================
+ * Page-level visual normalization
+ * 仅统一视觉规格，不改变业务布局/交互。
+ * ========================================================= */
+
+/* 1. 页面基础 */
+.container {
+  padding-left: 20rpx !important;
+  padding-right: 20rpx !important;
+}
+
+/* index 是全屏点餐页，保留其特殊布局 */
+.container.headerless {}
+
+/* 2. 卡片统一：20rpx */
+.card,
+.stat-card,
+.stats-card,
+.section-card,
+.form-card,
+.list-card,
+.recipe-card,
+.review-card,
+.order-card,
+.diary-card,
+.info-card,
+.coupon-card,
+.stock-item,
+.cat-item,
+.table-card,
+.kitchen-card,
+.section-list,
+.highlight-card,
+.amount-card,
+.checkout-item,
+.summary-card,
+.rec-card,
+.menu-item,
+.float-card,
+.dash-hero-card,
+.quick-grid,
+.ds-chip,
+.month-nav,
+.filter-row,
+.search-panel {
+  border-radius: 20rpx !important;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05) !important;
+}
+
+/* 3. 输入框统一：12rpx */
+.input,
+.textarea,
+.picker-value,
+.search-input-box,
+.add-input,
+.remark-input,
+.discount-input {
+  border-radius: 12rpx !important;
+  border-width: 2rpx !important;
+  box-sizing: border-box !important;
+}
+
+/* 搜索框是唯一的长胶囊输入控件 */
+.search-input-box {
+  border-radius: 999rpx !important;
+}
+
+/* 图片统一圆角；头像/圆形图标由页面自己的 50% 保持圆形 */
+.dish-img,
+.form-img,
+.item-img,
+.rec-img,
+.hero-image,
+.img-cell,
+.diary-img {
+  border-radius: 16rpx !important;
+}
+
+/* 4. 普通按钮统一：16rpx；明确的圆形按钮不覆盖 */
+.btn-save,
+.btn-submit,
+.btn-submit-order,
+.btn-add,
+.add-btn,
+.btn-add-bill,
+.export-btn,
+.coupon-btn,
+.go-order,
+.primary {
+  border-radius: 16rpx !important;
+}
+
+/* 5. 胶囊统一 */
+.tool-pill,
+.filter-pill,
+.search-chip,
+.cat-chip,
+.ds-chip,
+.dish-chip,
+.dish-tag,
+.taste-tag,
+.table-chip,
+.back-current,
+.page-tip,
+.kitchen-remark,
+.warn-badge,
+.from-order-tag {
+  border-radius: 999rpx !important;
+}
+
+/* 6. 小型状态/删除按钮统一 */
+.cat-del,
+.dm-clear,
+.btn-delete,
+.btn-delete-order,
+.btn-cancel-order,
+.coupon-btn.use,
+.table-del {
+  border-radius: 12rpx !important;
+}
+
+/* 7. 列表内分割线统一为极细浅灰 */
+.card-header,
+.order-header,
+.dm-item,
+.checkout-item,
+.dish-item,
+.kitchen-item,
+.bill-item {
+  border-bottom-color: #f0f0f0 !important;
+}
+
+/* 8. 卡片间距统一 */
+.stat-card,
+.section-card,
+.form-card,
+.list-card,
+.recipe-card,
+.review-card,
+.order-card,
+.diary-card,
+.coupon-card,
+.stock-item,
+.cat-item,
+.table-card,
+.kitchen-card,
+.highlight-card,
+.amount-card {
+  margin-bottom: 20rpx;
+}
+
+/* 9. 页面内容不要贴边 */
+.empty-tip,
+.empty-state,
+.empty-step {
+  border-radius: 20rpx !important;
+}
+
+/* 10. 触摸态，避免按钮点击时尺寸跳动 */
+.btn-save,
+.btn-submit,
+.btn-submit-order,
+.btn-add,
+.add-btn,
+.btn-add-bill,
+.export-btn,
+.coupon-btn,
+.go-order,
+.primary,
+.tool-btn,
+.dl-btn,
+.dish-act,
+.kitchen-btn,
+.stock-btn,
+.nav-btn {
+  box-sizing: border-box;
 }

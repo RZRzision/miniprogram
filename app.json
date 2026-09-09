@@ -2,8 +2,24 @@
   "pages": [
     "pages/index/index",
     "pages/order/order",
+    "pages/diary/diary",
     "pages/recipe/recipe",
-    "pages/manage/manage"
+    "pages/manage/manage",
+    "pages/bills/bills",
+    "pages/diary-edit/diary-edit",
+    "pages/monthly/monthly",
+    "pages/checkout/checkout",
+    "pages/detail/detail",
+    "pages/mine/mine",
+    "pages/dish-list/dish-list",
+    "pages/coupons/coupons",
+    "pages/reviews/reviews",
+    "pages/category/category",
+    "pages/stock/stock",
+    "pages/tables/tables",
+    "pages/settings/settings",
+    "pages/shop-stats/shop-stats",
+    "pages/data-manage/data-manage"
   ],
   "window": {
     "navigationBarBackgroundColor": "#ff8c00",
@@ -25,12 +41,12 @@
         "text": "订单"
       },
       {
-        "pagePath": "pages/recipe/recipe",
-        "text": "菜品做法"
+        "pagePath": "pages/diary/diary",
+        "text": "饭饭日记"
       },
       {
-        "pagePath": "pages/manage/manage",
-        "text": "管理"
+        "pagePath": "pages/mine/mine",
+        "text": "我的"
       }
     ]
   },

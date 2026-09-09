@@ -1,0 +1,48 @@
+<view class="container">
+  <block wx:if="{{hasData}}">
+    <!-- 经营总览 -->
+    <view class="stats-card">
+      <view class="stat">
+        <text class="stat-num">{{overview.totalOrders}}</text>
+        <text class="stat-label">总订单</text>
+      </view>
+      <view class="stat">
+        <text class="stat-num">¥{{overview.revenue}}</text>
+        <text class="stat-label">总营业额</text>
+      </view>
+      <view class="stat">
+        <text class="stat-num">¥{{overview.avgOrder}}</text>
+        <text class="stat-label">客单价</text>
+      </view>
+    </view>
+    <text class="card-note">有效订单 {{overview.validOrders}} 笔（已取消不计入营业额）</text>
+
+    <!-- 状态分布 -->
+    <view class="section-card">
+      <text class="section-label">📊 订单状态分布</text>
+      <view class="dist-row" wx:for="{{statusDist}}" wx:key="status">
+        <text class="dist-status">{{item.status}}</text>
+        <view class="dist-bar-bg">
+          <view class="dist-bar" style="width: {{overview.totalOrders > 0 ? item.count / overview.totalOrders * 100 : 0}}%;"></view>
+        </view>
+        <text class="dist-count">{{item.count}}</text>
+      </view>
+    </view>
+
+    <!-- 销量 Top5 -->
+    <view class="section-card">
+      <text class="section-label">🔥 菜品销量 Top5（已出单口径）</text>
+      <view class="top-row" wx:for="{{topDishes}}" wx:key="name">
+        <text class="top-rank {{index === 0 ? 'first' : ''}}">{{index + 1}}</text>
+        <text class="top-name">{{item.name}}</text>
+        <text class="top-count">售出 {{item.count}} 份</text>
+      </view>
+      <text wx:if="{{topDishes.length === 0}}" class="top-empty">还没有已出单的订单</text>
+    </view>
+  </block>
+
+  <view wx:else class="empty-tip">
+    <text class="empty-icon">📈</text>
+    <text>还没有订单数据，去点餐页下一单吧~</text>
+  </view>
+</view>

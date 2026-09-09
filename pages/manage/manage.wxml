@@ -1,12 +1,63 @@
 <view class="container">
+  <!-- 0. 经营 Dashboard（实时派生自 user_orders 与菜品数据） -->
+  <view class="dash-header">
+    <text class="dash-title">🏪 {{shopName || '商家经营台'}}</text>
+    <text class="dash-date">{{today}}</text>
+  </view>
+
+  <view class="dash-hero">
+    <view class="dash-hero-card">
+      <text class="dh-num">{{dashboard.todayOrders}}</text>
+      <text class="dh-label">今日订单</text>
+    </view>
+    <view class="dash-hero-card">
+      <text class="dh-num">¥{{dashboard.todayRevenue}}</text>
+      <text class="dh-label">今日营业额</text>
+    </view>
+    <view class="dash-hero-card">
+      <text class="dh-num">{{dashboard.todaySales}}</text>
+      <text class="dh-label">今日销量</text>
+    </view>
+  </view>
+
+  <view class="dash-status">
+    <view class="ds-chip"><text class="ds-num">{{dashboard.pending}}</text><text class="ds-label">待接单</text></view>
+    <view class="ds-chip"><text class="ds-num">{{dashboard.cooking}}</text><text class="ds-label">制作中</text></view>
+    <view class="ds-chip"><text class="ds-num">{{dashboard.waitShip}}</text><text class="ds-label">待出单</text></view>
+    <view class="ds-chip"><text class="ds-num">{{dashboard.shipped}}</text><text class="ds-label">已出单</text></view>
+    <view class="ds-chip"><text class="ds-num">{{dashboard.done}}</text><text class="ds-label">已完成</text></view>
+  </view>
+
+  <view class="dash-stock">
+    <view class="ds-chip wide"><text class="ds-num">{{dashboard.dishCount}}</text><text class="ds-label">菜品数量</text></view>
+    <view class="ds-chip wide {{dashboard.soldOut > 0 ? 'warn' : ''}}"><text class="ds-num">{{dashboard.soldOut}}</text><text class="ds-label">售罄菜品</text></view>
+  </view>
+
+  <!-- 快捷入口 -->
+  <view class="quick-grid">
+    <view class="quick-item" bindtap="goQuick" data-action="orders"><text class="qi-icon">📋</text><text class="qi-name">订单管理</text></view>
+    <view class="quick-item" bindtap="goQuick" data-action="kitchen"><text class="qi-icon">🍳</text><text class="qi-name">厨房</text></view>
+    <view class="quick-item" bindtap="goQuick" data-action="dish"><text class="qi-icon">🍱</text><text class="qi-name">菜品管理</text></view>
+    <view class="quick-item" bindtap="goQuick" data-action="category"><text class="qi-icon">🗂️</text><text class="qi-name">分类管理</text></view>
+    <view class="quick-item" bindtap="goQuick" data-action="stock"><text class="qi-icon">📦</text><text class="qi-name">库存</text></view>
+    <view class="quick-item" bindtap="goQuick" data-action="tables"><text class="qi-icon">🪑</text><text class="qi-name">桌台</text></view>
+    <view class="quick-item" bindtap="goQuick" data-action="coupons"><text class="qi-icon">🎫</text><text class="qi-name">优惠券</text></view>
+    <view class="quick-item" bindtap="goQuick" data-action="settings"><text class="qi-icon">⚙️</text><text class="qi-name">营业设置</text></view>
+    <view class="quick-item" bindtap="goQuick" data-action="stats"><text class="qi-icon">📈</text><text class="qi-name">数据统计</text></view>
+    <view class="quick-item" bindtap="goQuick" data-action="data"><text class="qi-icon">🗄️</text><text class="qi-name">数据管理</text></view>
+  </view>
+
   <view class="header">
     <text class="title">⚙️ 菜品管理与添加</text>
   </view>
 
-  <!-- 1. 新增菜品表单 -->
-  <view class="form-card">
-    <text class="card-subtitle">➕ 添加新菜品</text>
-    
+  <!-- 1. 新增/编辑菜品表单 -->
+  <view class="form-card" id="dish-form">
+    <view class="form-head-row">
+      <text class="card-subtitle">{{editingId ? '✏️ 编辑菜品' : '➕ 添加新菜品'}}</text>
+      <text wx:if="{{editingId}}" class="cancel-edit" bindtap="cancelEdit">取消编辑</text>
+    </view>
+
     <view class="form-item">
       <text class="label">菜品名称</text>
       <input class="input" placeholder="例如：糖醋排骨" value="{{form.name}}" bindinput="onInputName"/>
@@ -15,6 +66,15 @@
     <view class="form-item">
       <text class="label">奖励/代价</text>
       <input class="input" placeholder="例如：洗碗一次" value="{{form.price}}" bindinput="onInputPrice"/>
+    </view>
+    <view class="form-item">
+      <text class="label">价格（元，可选）</text>
+      <input class="input" type="digit" placeholder="例如：18.5（用于结算统计）" value="{{form.amount}}" bindinput="onInputAmount"/>
+    </view>
+
+    <view class="form-item">
+      <text class="label">菜品描述</text>
+      <input class="input" placeholder="例如：咸甜入魂的镇店之宝" value="{{form.desc}}" bindinput="onInputDesc"/>
     </view>
 
     <view class="form-item">
@@ -25,18 +85,38 @@
     </view>
 
     <view class="form-item">
+      <text class="label">库存（份）</text>
+      <input class="input" type="number" placeholder="例如：50" value="{{form.stock}}" bindinput="onInputStock"/>
+    </view>
+
+    <view class="form-item">
+      <text class="label">库存预警值（库存 ≤ 该值时提醒）</text>
+      <input class="input" type="number" placeholder="例如：5" value="{{form.stockWarn}}" bindinput="onInputStockWarn"/>
+    </view>
+
+    <view class="form-item">
+      <text class="label">菜品图片（可选）</text>
+      <view class="image-row">
+        <image wx:if="{{form.image}}" src="{{form.image}}" mode="aspectFill" class="form-img" />
+        <view wx:else class="form-img add-img" bindtap="chooseImage">📷</view>
+        <text wx:if="{{form.image}}" class="img-clear" bindtap="clearImage">移除图片</text>
+        <text wx:else class="img-tip">点击拍照或从相册选择</text>
+      </view>
+    </view>
+
+    <view class="form-item">
       <text class="label">选择图标</text>
       <scroll-view scroll-x class="icon-selector">
         <block wx:for="{{iconList}}" wx:key="*this">
-          <text 
-            class="icon-option {{form.icon === item ? 'selected' : ''}}" 
-            bindtap="selectIcon" 
+          <text
+            class="icon-option {{form.icon === item ? 'selected' : ''}}"
+            bindtap="selectIcon"
             data-icon="{{item}}">{{item}}</text>
         </block>
       </scroll-view>
     </view>
 
-    <button class="btn-add" bindtap="addDish">加入菜单</button>
+    <button class="btn-add" bindtap="saveDish">{{editingId ? '保存修改' : '加入菜单'}}</button>
   </view>
 
   <!-- 2. 现有菜品列表管理 -->
@@ -44,17 +124,48 @@
     <text class="card-subtitle">🍱 现有菜单列表 ({{menuList.length}})</text>
     <view class="dish-list">
       <block wx:for="{{menuList}}" wx:key="id">
-        <view class="dish-item">
-          <view class="dish-info">
-            <text class="dish-icon">{{item.icon}}</text>
-            <view class="dish-text">
-              <text class="dish-name">{{item.name}} <text class="tag">{{item.category}}</text></text>
-              <text class="dish-price">奖励: {{item.price}}</text>
+        <view class="dish-item {{item.soldOut || !item.onSale ? 'dish-muted' : ''}}">
+          <image wx:if="{{item.image}}" src="{{item.image}}" mode="aspectFill" class="dish-img" />
+          <text wx:else class="dish-icon">{{item.icon}}</text>
+          <view class="dish-text">
+            <view class="dish-name-row">
+              <text class="dish-name">{{item.name}}</text>
+              <text class="tag">{{item.category}}</text>
+              <text wx:if="{{item.soldOut}}" class="dish-badge danger">售罄</text>
+              <text wx:elif="{{item.lowStock}}" class="dish-badge warn">库存预警</text>
+              <text wx:if="{{!item.onSale}}" class="dish-badge gray">已下架</text>
             </view>
+            <text class="dish-price">奖励: {{item.price}}{{item.amount > 0 ? ' · ¥' + item.amount : ''}} · 月销 {{item.monthSales}} · 库存 {{item.stockText}}</text>
+            <text wx:if="{{item.descShow}}" class="dish-desc">{{item.descShow}}</text>
           </view>
-          <view class="btn-delete" bindtap="deleteDish" data-id="{{item.id}}">删除</view>
+          <view class="dish-actions">
+            <text class="dish-act" catchtap="startEdit" data-id="{{item.id}}">编辑</text>
+            <text class="dish-act" catchtap="toggleDishSale" data-id="{{item.id}}">{{item.onSale ? '下架' : '上架'}}</text>
+            <text class="dish-act del" catchtap="deleteDish" data-id="{{item.id}}">删除</text>
+          </view>
         </view>
       </block>
     </view>
+  </view>
+
+  <!-- 3. 厨房/商家端：订单状态流转（直接读写 user_orders） -->
+  <view class="kitchen-card" id="kitchen-section">
+    <text class="card-subtitle">🍳 厨房订单（商家 / 厨房端）</text>
+    <block wx:for="{{kitchenOrders}}" wx:key="id">
+      <view class="kitchen-item">
+        <view class="kitchen-top">
+          <text class="kitchen-time">🕒 {{item.time}}</text>
+          <view class="order-status status-{{item.statusCls}}">{{item.status}}</view>
+        </view>
+        <text class="kitchen-dishes">{{item.itemsText}}</text>
+        <text wx:if="{{item.tasteRemark}}" class="kitchen-remark">【口味备注】{{item.tasteRemark}}</text>
+        <view class="kitchen-actions">
+          <view wx:if="{{item.prevStatus}}" class="kitchen-btn" catchtap="rollbackOrder" data-id="{{item.id}}">↩ 回退</view>
+          <view wx:if="{{item.canCancel}}" class="kitchen-btn danger" catchtap="cancelOrder" data-id="{{item.id}}">取消</view>
+          <view wx:if="{{item.nextStatus}}" class="kitchen-btn primary" catchtap="advanceOrder" data-id="{{item.id}}">推进 → {{item.nextStatus}}</view>
+        </view>
+      </view>
+    </block>
+    <view wx:if="{{kitchenOrders.length === 0}}" class="kitchen-empty">暂无订单，去点餐页下一单吧~</view>
   </view>
 </view>

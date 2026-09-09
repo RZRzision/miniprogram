@@ -1,0 +1,24 @@
+<view class="container">
+  <view class="section-card">
+    <text class="section-label">🏪 店铺名称</text>
+    <input class="input" placeholder="例如：情侣深夜食堂（总店）" value="{{shopName}}" bindinput="onShopNameInput" />
+
+    <text class="section-label">🤖 自动接单</text>
+    <view class="switch-row">
+      <text class="switch-desc">开启后新订单跳过「待接单」，直接进入「已接单」</text>
+      <switch checked="{{autoAccept}}" color="#ff8c00" bindchange="onAutoAcceptChange" />
+    </view>
+
+    <text class="section-label">🌙 深夜时段开始时间</text>
+    <view class="switch-row">
+      <text class="switch-desc">该时间后首页「深夜推荐」显示深夜文案</text>
+      <picker mode="selector" range="{{nightOptions}}" value="{{nightIndex}}" bindchange="onNightChange">
+        <view class="picker-value">{{nightOptions[nightIndex]}} ▾</view>
+      </picker>
+    </view>
+
+    <button class="btn-save" bindtap="saveSettings">保存设置</button>
+  </view>
+
+  <text class="bottom-tip">设置保存在本机，立即对点餐 / 结算 / 推荐生效</text>
+</view>

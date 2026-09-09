@@ -1,0 +1,21 @@
+<view class="container">
+  <view class="head-row">
+    <text class="page-title">🗄️ 数据管理</text>
+    <view class="export-btn" bindtap="exportAll">📤 导出全部</view>
+  </view>
+
+  <view class="section-list">
+    <block wx:for="{{sections}}" wx:key="key">
+      <view class="dm-item">
+        <text class="dm-label">{{item.label}}</text>
+        <view class="dm-right">
+          <text class="dm-count">{{item.countText}}</text>
+          <text wx:if="{{item.clearable}}" class="dm-clear" catchtap="clearKey" data-key="{{item.key}}">清空</text>
+          <text wx:else class="dm-locked">🔒</text>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <text class="bottom-tip">锁定的数据为核心业务数据，仅提供数量查看；导出内容为全部本地数据的 JSON 快照</text>
+</view>

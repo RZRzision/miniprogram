@@ -1,0 +1,46 @@
+<view class="container">
+  <!-- 正常态：菜品详情 -->
+  <block wx:if="{{dish}}">
+    <!-- 菜品图片（无图片数据时以菜品图标大图展示） -->
+    <view class="hero">
+      <image wx:if="{{dish.image}}" src="{{dish.image}}" mode="aspectFill" class="hero-image" />
+      <text wx:else class="hero-icon">{{dish.icon}}</text>
+      <view wx:if="{{soldOut}}" class="sold-out-badge">售罄 / 已下架</view>
+    </view>
+
+    <!-- 基本信息：名称 / 标签 / 价格 / 月销 / 库存 -->
+    <view class="info-card">
+      <view class="name-row">
+        <text class="name">{{dish.name}}</text>
+        <text class="tag">{{dish.category}}</text>
+      </view>
+      <view class="tag-row" wx:if="{{dish.tagsShow.length > 0}}">
+        <text wx:for="{{dish.tagsShow}}" wx:key="*this" class="dish-tag">{{item}}</text>
+      </view>
+      <view class="meta-row">
+        <text class="price">奖励: {{dish.price}}{{dish.amount > 0 ? ' · ¥' + dish.amount : ''}}</text>
+        <text class="sales">月销 {{dish.monthSales}}</text>
+      </view>
+      <text class="stock">📦 {{dish.stockText}}</text>
+      <view class="desc-block">
+        <text class="desc-label">菜品介绍</text>
+        <text class="desc">{{dish.desc}}</text>
+      </view>
+    </view>
+  </block>
+
+  <!-- 异常态：菜品不存在 / 已删除 / 数据异常 -->
+  <view wx:elif="{{loadError}}" class="error-state">
+    <text class="error-icon">🍽️</text>
+    <text class="error-text">{{loadError}}</text>
+    <view class="btn-back" bindtap="backToIndex">去点餐页看看</view>
+  </view>
+
+  <view class="bottom-padding"></view>
+
+  <!-- 底部固定操作栏 -->
+  <view wx:if="{{dish}}" class="bottom-bar">
+    <view class="btn-fav {{favorited ? 'active' : ''}}" bindtap="toggleFavorite">{{favorited ? '❤️ 已收藏' : '🤍 收藏'}}</view>
+    <view class="btn-cart {{soldOut ? 'disabled' : ''}}" bindtap="addToCart">加入购物车</view>
+  </view>
+</view>

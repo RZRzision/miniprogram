@@ -1,0 +1,517 @@
+page {
+  background-color: #f8f8f8;
+}
+
+.container {
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 24rpx 20rpx;
+}
+
+.bottom-padding {
+  height: 180rpx;
+}
+
+/* 区块卡片 */
+.section-card {
+  background: #ffffff;
+  border-radius: 20rpx;
+  padding: 26rpx 30rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+}
+
+.section-label {
+  font-size: 26rpx;
+  font-weight: bold;
+  color: #333333;
+  display: block;
+  margin-bottom: 20rpx;
+}
+
+.section-sub {
+  font-size: 22rpx;
+  color: #999999;
+  display: block;
+  margin: 16rpx 0 12rpx;
+}
+
+/* 结算清单条目 */
+.checkout-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f8f8f8;
+}
+
+.checkout-item:last-child {
+  border-bottom: none;
+  padding-bottom: 4rpx;
+}
+
+.item-img {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 16rpx;
+  background: #fff2e8;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+
+.item-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56rpx;
+}
+
+.item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.item-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #222222;
+}
+
+.item-price {
+  font-size: 22rpx;
+  color: #ff8c00;
+  margin-top: 6rpx;
+}
+
+.item-qty {
+  font-size: 22rpx;
+  color: #999999;
+  margin-top: 4rpx;
+}
+
+.item-sub {
+  flex-shrink: 0;
+}
+
+.item-subtotal {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #ff8c00;
+}
+
+.item-subtotal.reward {
+  font-size: 22rpx;
+  color: #999999;
+  font-weight: normal;
+}
+
+/* 用餐方式 */
+.mode-row {
+  display: flex;
+}
+
+.mode-btn {
+  flex: 1;
+  height: 76rpx;
+  line-height: 72rpx;
+  text-align: center;
+  border-radius: 16rpx;
+  border: 2rpx solid #ffd8b3;
+  background: #fffaf5;
+  color: #666666;
+  font-size: 28rpx;
+  margin-right: 20rpx;
+  box-sizing: border-box;
+}
+
+.mode-btn:last-child {
+  margin-right: 0;
+}
+
+.mode-btn.active {
+  color: #ff8c00;
+  border-color: #ff8c00;
+  background: #fff5eb;
+  font-weight: 600;
+}
+
+/* 桌号选择 */
+.table-row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.table-chip {
+  font-size: 24rpx;
+  color: #666666;
+  background: #f5f5f5;
+  padding: 10rpx 24rpx;
+  border-radius: 24rpx;
+  margin: 0 12rpx 12rpx 0;
+}
+
+.table-chip.active {
+  color: #ff8c00;
+  background: #fff5eb;
+  border: 2rpx solid #ff8c00;
+}
+
+/* 口味备注 */
+.tag-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 16rpx;
+}
+
+.taste-tag {
+  font-size: 22rpx;
+  color: #666666;
+  background: #f5f5f5;
+  padding: 8rpx 20rpx;
+  border-radius: 24rpx;
+  margin: 0 12rpx 12rpx 0;
+}
+
+.taste-tag.active {
+  color: #ff8c00;
+  background: #fff5eb;
+  border: 2rpx solid #ff8c00;
+}
+
+.remark-input {
+  background: #fffaf5;
+  border: 2rpx solid #ffd8b3;
+  height: 68rpx;
+  border-radius: 12rpx;
+  padding: 0 20rpx;
+  font-size: 24rpx;
+  color: #333333;
+}
+
+/* 金额明细 */
+.amount-card {
+  padding-bottom: 14rpx;
+}
+
+.amount-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14rpx 0;
+}
+
+.amount-label {
+  font-size: 26rpx;
+  color: #666666;
+}
+
+.amount-value {
+  font-size: 28rpx;
+  color: #333333;
+  font-weight: 600;
+}
+
+.discount-input {
+  width: 200rpx;
+  height: 60rpx;
+  background: #fffaf5;
+  border: 2rpx solid #ffd8b3;
+  border-radius: 12rpx;
+  text-align: center;
+  font-size: 26rpx;
+  color: #333333;
+}
+
+.amount-row.payable {
+  border-top: 1rpx dashed #f0f0f0;
+  margin-top: 8rpx;
+  padding-top: 20rpx;
+}
+
+.amount-value.pay {
+  color: #ff8c00;
+  font-size: 34rpx;
+}
+
+.amount-tip {
+  font-size: 20rpx;
+  color: #bbbbbb;
+  display: block;
+  margin-top: 8rpx;
+}
+
+/* 底部固定提交栏 */
+.bottom-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 130rpx;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  padding: 0 30rpx;
+  box-shadow: 0 -4rpx 16rpx rgba(0, 0, 0, 0.06);
+  z-index: 99;
+}
+
+.pay-info {
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+}
+
+.pay-label {
+  font-size: 24rpx;
+  color: #999999;
+  margin-right: 12rpx;
+}
+
+.pay-num {
+  font-size: 44rpx;
+  font-weight: bold;
+  color: #ff8c00;
+}
+
+.btn-submit-order {
+  margin: 0 !important;
+  width: 280rpx !important;
+  height: 84rpx !important;
+  line-height: 84rpx !important;
+  background-color: #ff8c00 !important;
+  color: #ffffff !important;
+  border-radius: 42rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  padding: 0 !important;
+}
+
+/* 失效态 */
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 240rpx;
+}
+
+.error-icon {
+  font-size: 90rpx;
+  margin-bottom: 24rpx;
+}
+
+.error-text {
+  font-size: 28rpx;
+  color: #999999;
+  margin-bottom: 40rpx;
+  padding: 0 60rpx;
+  text-align: center;
+}
+
+.btn-back {
+  padding: 16rpx 48rpx;
+  background: #ff8c00;
+  color: #ffffff;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+}
+
+/* 库存重校验：无法结算项 */
+.invalid-banner {
+  font-size: 22rpx;
+  color: #e67300;
+  background: #ffefd9;
+  border: 2rpx solid #ffd8b3;
+  border-radius: 12rpx;
+  padding: 12rpx 18rpx;
+  margin-bottom: 14rpx;
+}
+
+.checkout-item.item-invalid {
+  opacity: 0.55;
+}
+
+.item-invalid-reason {
+  font-size: 20rpx;
+  color: #ff4d4f;
+  margin-top: 6rpx;
+}
+
+
+/* ===== Global visual consistency overrides ===== */
+/* =========================================================
+ * Page-level visual normalization
+ * 仅统一视觉规格，不改变业务布局/交互。
+ * ========================================================= */
+
+/* 1. 页面基础 */
+.container {
+  padding-left: 20rpx !important;
+  padding-right: 20rpx !important;
+}
+
+/* index 是全屏点餐页，保留其特殊布局 */
+.container.headerless {}
+
+/* 2. 卡片统一：20rpx */
+.card,
+.stat-card,
+.stats-card,
+.section-card,
+.form-card,
+.list-card,
+.recipe-card,
+.review-card,
+.order-card,
+.diary-card,
+.info-card,
+.coupon-card,
+.stock-item,
+.cat-item,
+.table-card,
+.kitchen-card,
+.section-list,
+.highlight-card,
+.amount-card,
+.checkout-item,
+.summary-card,
+.rec-card,
+.menu-item,
+.float-card,
+.dash-hero-card,
+.quick-grid,
+.ds-chip,
+.month-nav,
+.filter-row,
+.search-panel {
+  border-radius: 20rpx !important;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05) !important;
+}
+
+/* 3. 输入框统一：12rpx */
+.input,
+.textarea,
+.picker-value,
+.search-input-box,
+.add-input,
+.remark-input,
+.discount-input {
+  border-radius: 12rpx !important;
+  border-width: 2rpx !important;
+  box-sizing: border-box !important;
+}
+
+/* 搜索框是唯一的长胶囊输入控件 */
+.search-input-box {
+  border-radius: 999rpx !important;
+}
+
+/* 图片统一圆角；头像/圆形图标由页面自己的 50% 保持圆形 */
+.dish-img,
+.form-img,
+.item-img,
+.rec-img,
+.hero-image,
+.img-cell,
+.diary-img {
+  border-radius: 16rpx !important;
+}
+
+/* 4. 普通按钮统一：16rpx；明确的圆形按钮不覆盖 */
+.btn-save,
+.btn-submit,
+.btn-submit-order,
+.btn-add,
+.add-btn,
+.btn-add-bill,
+.export-btn,
+.coupon-btn,
+.go-order,
+.primary {
+  border-radius: 16rpx !important;
+}
+
+/* 5. 胶囊统一 */
+.tool-pill,
+.filter-pill,
+.search-chip,
+.cat-chip,
+.ds-chip,
+.dish-chip,
+.dish-tag,
+.taste-tag,
+.table-chip,
+.back-current,
+.page-tip,
+.kitchen-remark,
+.warn-badge,
+.from-order-tag {
+  border-radius: 999rpx !important;
+}
+
+/* 6. 小型状态/删除按钮统一 */
+.cat-del,
+.dm-clear,
+.btn-delete,
+.btn-delete-order,
+.btn-cancel-order,
+.coupon-btn.use,
+.table-del {
+  border-radius: 12rpx !important;
+}
+
+/* 7. 列表内分割线统一为极细浅灰 */
+.card-header,
+.order-header,
+.dm-item,
+.checkout-item,
+.dish-item,
+.kitchen-item,
+.bill-item {
+  border-bottom-color: #f0f0f0 !important;
+}
+
+/* 8. 卡片间距统一 */
+.stat-card,
+.section-card,
+.form-card,
+.list-card,
+.recipe-card,
+.review-card,
+.order-card,
+.diary-card,
+.coupon-card,
+.stock-item,
+.cat-item,
+.table-card,
+.kitchen-card,
+.highlight-card,
+.amount-card {
+  margin-bottom: 20rpx;
+}
+
+/* 9. 页面内容不要贴边 */
+.empty-tip,
+.empty-state,
+.empty-step {
+  border-radius: 20rpx !important;
+}
+
+/* 10. 触摸态，避免按钮点击时尺寸跳动 */
+.btn-save,
+.btn-submit,
+.btn-submit-order,
+.btn-add,
+.add-btn,
+.btn-add-bill,
+.export-btn,
+.coupon-btn,
+.go-order,
+.primary,
+.tool-btn,
+.dl-btn,
+.dish-act,
+.kitchen-btn,
+.stock-btn,
+.nav-btn {
+  box-sizing: border-box;
+}

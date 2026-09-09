@@ -1,0 +1,36 @@
+<view class="container">
+  <!-- 可领取 -->
+  <view class="section-title">🎫 可领取</view>
+  <block wx:for="{{claimable}}" wx:key="id">
+    <view class="coupon-card">
+      <view class="coupon-left">
+        <text class="coupon-amount">¥{{item.amount}}</text>
+        <text class="coupon-condition">{{item.condition}}</text>
+      </view>
+      <view class="coupon-mid">
+        <text class="coupon-name">{{item.name}}</text>
+        <text class="coupon-tip">结算时在「优惠金额」中填写使用</text>
+      </view>
+      <view class="coupon-btn" catchtap="claim" data-id="{{item.id}}">领取</view>
+    </view>
+  </block>
+  <view wx:if="{{claimable.length === 0}}" class="all-claimed">全部领取完毕，太棒啦 🎉</view>
+
+  <!-- 我的优惠券 -->
+  <view class="section-title" wx:if="{{claimed.length > 0}}">🎟️ 我的优惠券（{{claimed.length}}）</view>
+  <block wx:for="{{claimed}}" wx:key="id">
+    <view class="coupon-card claimed">
+      <view class="coupon-left">
+        <text class="coupon-amount">¥{{item.amount}}</text>
+        <text class="coupon-condition">{{item.condition}}</text>
+      </view>
+      <view class="coupon-mid">
+        <text class="coupon-name">{{item.name}}</text>
+        <text class="coupon-tip">领取于 {{item.claimedAt}}</text>
+      </view>
+      <view class="coupon-btn use" catchtap="useCoupon">去使用</view>
+    </view>
+  </block>
+
+  <view class="bottom-tip">优惠券金额在结算页「优惠金额」中手动填写，实付 = 原价 - 优惠</view>
+</view>

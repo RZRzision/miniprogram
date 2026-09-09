@@ -1,0 +1,60 @@
+<view class="container">
+  <view class="header">
+    <text class="title">⚙️ 菜品管理与添加</text>
+  </view>
+
+  <!-- 1. 新增菜品表单 -->
+  <view class="form-card">
+    <text class="card-subtitle">➕ 添加新菜品</text>
+    
+    <view class="form-item">
+      <text class="label">菜品名称</text>
+      <input class="input" placeholder="例如：糖醋排骨" value="{{form.name}}" bindinput="onInputName"/>
+    </view>
+
+    <view class="form-item">
+      <text class="label">奖励/代价</text>
+      <input class="input" placeholder="例如：洗碗一次" value="{{form.price}}" bindinput="onInputPrice"/>
+    </view>
+
+    <view class="form-item">
+      <text class="label">菜品分类</text>
+      <picker bindchange="onCategoryChange" value="{{categoryIndex}}" range="{{categories}}">
+        <view class="picker-value">{{categories[categoryIndex]}} ▾</view>
+      </picker>
+    </view>
+
+    <view class="form-item">
+      <text class="label">选择图标</text>
+      <scroll-view scroll-x class="icon-selector">
+        <block wx:for="{{iconList}}" wx:key="*this">
+          <text 
+            class="icon-option {{form.icon === item ? 'selected' : ''}}" 
+            bindtap="selectIcon" 
+            data-icon="{{item}}">{{item}}</text>
+        </block>
+      </scroll-view>
+    </view>
+
+    <button class="btn-add" bindtap="addDish">加入菜单</button>
+  </view>
+
+  <!-- 2. 现有菜品列表管理 -->
+  <view class="list-card">
+    <text class="card-subtitle">🍱 现有菜单列表 ({{menuList.length}})</text>
+    <view class="dish-list">
+      <block wx:for="{{menuList}}" wx:key="id">
+        <view class="dish-item">
+          <view class="dish-info">
+            <text class="dish-icon">{{item.icon}}</text>
+            <view class="dish-text">
+              <text class="dish-name">{{item.name}} <text class="tag">{{item.category}}</text></text>
+              <text class="dish-price">奖励: {{item.price}}</text>
+            </view>
+          </view>
+          <view class="btn-delete" bindtap="deleteDish" data-id="{{item.id}}">删除</view>
+        </view>
+      </block>
+    </view>
+  </view>
+</view>

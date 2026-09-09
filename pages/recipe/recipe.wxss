@@ -1,0 +1,225 @@
+page {
+  background-color: #f8f8f8;
+}
+
+.container {
+  padding: 24rpx 20rpx; /* 统一标准的左右 20rpx 边距 */
+  box-sizing: border-box;
+  min-height: 100vh;
+  display: block; /* 强制块级流式布局，严格自上而下排列 */
+}
+
+.header {
+  margin-bottom: 24rpx;
+  text-align: center;
+}
+
+.title {
+  font-size: 38rpx;
+  font-weight: bold;
+  color: #ff8c00;
+}
+
+/* 菜谱列表区域 */
+.recipe-list {
+  width: 100%;
+  display: block;
+}
+
+/* 单个菜谱卡片 */
+.recipe-card {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.recipe-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #222222;
+}
+
+.btn-delete {
+  font-size: 22rpx;
+  color: #ff4d4f;
+  background-color: #ffeeee;
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+}
+
+.recipe-body {
+  padding-top: 20rpx;
+}
+
+.step-row {
+  display: flex;
+  margin-bottom: 16rpx;
+}
+
+.step-row:last-child {
+  margin-bottom: 0;
+}
+
+.step-num {
+  font-size: 28rpx;
+  color: #ff8c00;
+  font-weight: bold;
+  margin-right: 12rpx;
+}
+
+.step-text {
+  font-size: 28rpx;
+  color: #444444;
+  line-height: 1.5;
+  flex: 1;
+}
+
+.bottom-padding {
+  height: 140rpx;
+}
+
+/* 右下角悬浮加号按钮 */
+.fab-btn {
+  position: fixed;
+  right: 40rpx;
+  bottom: 140rpx;
+  width: 100rpx;
+  height: 100rpx;
+  line-height: 90rpx;
+  background-color: #ff8c00;
+  color: #ffffff;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 56rpx;
+  font-weight: 300;
+  box-shadow: 0 8rpx 20rpx rgba(255, 140, 0, 0.4);
+  z-index: 90;
+}
+
+/* 遮罩与弹窗 */
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 95;
+}
+
+.recipe-modal {
+  position: fixed;
+  left: 30rpx;
+  right: 30rpx;
+  top: 15%;
+  background: #ffffff;
+  border-radius: 30rpx;
+  padding: 30rpx;
+  z-index: 99;
+  box-shadow: 0 10rpx 30rpx rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.modal-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333333;
+}
+
+.close-btn {
+  font-size: 32rpx;
+  color: #999999;
+  padding: 10rpx;
+}
+
+.form-item {
+  margin-bottom: 20rpx;
+}
+
+.label {
+  font-size: 24rpx;
+  color: #666666;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.input {
+  background: #fffaf5;
+  border: 2rpx solid #ffd8b3;
+  height: 72rpx;
+  border-radius: 12rpx;
+  padding: 0 20rpx;
+  font-size: 26rpx;
+  color: #333333;
+}
+
+.textarea {
+  width: 100%;
+  height: 180rpx;
+  background: #fffaf5;
+  border: 2rpx solid #ffd8b3;
+  border-radius: 12rpx;
+  padding: 16rpx 20rpx;
+  font-size: 26rpx;
+  color: #333333;
+  box-sizing: border-box;
+}
+
+.icon-selector {
+  white-space: nowrap;
+  width: 100%;
+}
+
+.icon-option {
+  display: inline-block;
+  font-size: 40rpx;
+  padding: 10rpx 16rpx;
+  margin-right: 12rpx;
+  border-radius: 12rpx;
+  background: #f5f5f5;
+}
+
+.icon-option.selected {
+  background: #fff0e0;
+  border: 2rpx solid #ff8c00;
+}
+
+.btn-submit {
+  background-color: #ff8c00 !important;
+  color: #ffffff !important;
+  border-radius: 35rpx;
+  font-size: 28rpx;
+  margin-top: 20rpx;
+}
+
+.empty-tip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 180rpx;
+  color: #999999;
+  font-size: 28rpx;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+}

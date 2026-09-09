@@ -41,135 +41,7 @@
     </block>
   </view>
 
-  <!-- 2.5 推荐区域（由现有菜品数据派生；卡片可进详情，+ 按钮复用购物车数量逻辑） -->
-  <view class="rec-area">
-    <view class="rec-section" wx:if="{{recommend.today.length > 0}}">
-      <view class="rec-header">
-        <text class="rec-title">🌟 今日推荐</text>
-        <text class="rec-sub">每天换着花样吃</text>
-      </view>
-      <scroll-view scroll-x class="rec-scroll">
-        <view class="rec-card" wx:for="{{recommend.today}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
-          <image wx:if="{{item.image}}" src="{{item.image}}" mode="aspectFill" class="rec-img" />
-          <view wx:else class="rec-img rec-icon">{{item.icon}}</view>
-          <view class="rec-body">
-            <text class="rec-name">{{item.name}}</text>
-            <text class="rec-desc">{{item.desc}}</text>
-            <view class="rec-tags" wx:if="{{item.tagsShow.length > 0}}">
-              <text wx:for="{{item.tagsShow}}" wx:for-item="tag" wx:key="*this" class="rec-tag">{{tag}}</text>
-            </view>
-            <view class="rec-foot">
-              <text class="rec-price">{{item.price}}</text>
-              <text class="rec-sales">月销 {{item.monthSales}}</text>
-              <view class="rec-add" catchtap="increaseQuantity" data-id="{{item.id}}">＋</view>
-            </view>
-          </view>
-        </view>
-      </scroll-view>
-    </view>
-
-    <view class="rec-section" wx:if="{{recommend.couple.length > 0}}">
-      <view class="rec-header">
-        <text class="rec-title">💞 情侣推荐</text>
-        <text class="rec-sub">适合两个人一起吃</text>
-      </view>
-      <scroll-view scroll-x class="rec-scroll">
-        <view class="rec-card" wx:for="{{recommend.couple}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
-          <image wx:if="{{item.image}}" src="{{item.image}}" mode="aspectFill" class="rec-img" />
-          <view wx:else class="rec-img rec-icon">{{item.icon}}</view>
-          <view class="rec-body">
-            <text class="rec-name">{{item.name}}</text>
-            <text class="rec-desc">{{item.desc}}</text>
-            <view class="rec-tags" wx:if="{{item.tagsShow.length > 0}}">
-              <text wx:for="{{item.tagsShow}}" wx:for-item="tag" wx:key="*this" class="rec-tag">{{tag}}</text>
-            </view>
-            <view class="rec-foot">
-              <text class="rec-price">{{item.price}}</text>
-              <text class="rec-sales">月销 {{item.monthSales}}</text>
-              <view class="rec-add" catchtap="increaseQuantity" data-id="{{item.id}}">＋</view>
-            </view>
-          </view>
-        </view>
-      </scroll-view>
-    </view>
-
-    <view class="rec-section" wx:if="{{recommend.night.length > 0}}">
-      <view class="rec-header">
-        <text class="rec-title">🌙 深夜推荐</text>
-        <text class="rec-sub">{{recommend.nightTip}}</text>
-      </view>
-      <scroll-view scroll-x class="rec-scroll">
-        <view class="rec-card" wx:for="{{recommend.night}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
-          <image wx:if="{{item.image}}" src="{{item.image}}" mode="aspectFill" class="rec-img" />
-          <view wx:else class="rec-img rec-icon">{{item.icon}}</view>
-          <view class="rec-body">
-            <text class="rec-name">{{item.name}}</text>
-            <text class="rec-desc">{{item.desc}}</text>
-            <view class="rec-tags" wx:if="{{item.tagsShow.length > 0}}">
-              <text wx:for="{{item.tagsShow}}" wx:for-item="tag" wx:key="*this" class="rec-tag">{{tag}}</text>
-            </view>
-            <view class="rec-foot">
-              <text class="rec-price">{{item.price}}</text>
-              <text class="rec-sales">月销 {{item.monthSales}}</text>
-              <view class="rec-add" catchtap="increaseQuantity" data-id="{{item.id}}">＋</view>
-            </view>
-          </view>
-        </view>
-      </scroll-view>
-    </view>
-
-    <view class="rec-section" wx:if="{{recommend.sales.length > 0}}">
-      <view class="rec-header">
-        <text class="rec-title">🔥 高销量</text>
-        <text class="rec-sub">大家都在吃</text>
-      </view>
-      <scroll-view scroll-x class="rec-scroll">
-        <view class="rec-card" wx:for="{{recommend.sales}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
-          <image wx:if="{{item.image}}" src="{{item.image}}" mode="aspectFill" class="rec-img" />
-          <view wx:else class="rec-img rec-icon">{{item.icon}}</view>
-          <view class="rec-body">
-            <text class="rec-name">{{item.name}}</text>
-            <text class="rec-desc">{{item.desc}}</text>
-            <view class="rec-tags" wx:if="{{item.tagsShow.length > 0}}">
-              <text wx:for="{{item.tagsShow}}" wx:for-item="tag" wx:key="*this" class="rec-tag">{{tag}}</text>
-            </view>
-            <view class="rec-foot">
-              <text class="rec-price">{{item.price}}</text>
-              <text class="rec-sales">月销 {{item.monthSales}}</text>
-              <view class="rec-add" catchtap="increaseQuantity" data-id="{{item.id}}">＋</view>
-            </view>
-          </view>
-        </view>
-      </scroll-view>
-    </view>
-
-    <view class="rec-section" wx:if="{{recommend.guess.length > 0}}">
-      <view class="rec-header">
-        <text class="rec-title">✨ 猜你喜欢</text>
-        <text class="rec-sub">根据你的口味挑选</text>
-      </view>
-      <scroll-view scroll-x class="rec-scroll">
-        <view class="rec-card" wx:for="{{recommend.guess}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
-          <image wx:if="{{item.image}}" src="{{item.image}}" mode="aspectFill" class="rec-img" />
-          <view wx:else class="rec-img rec-icon">{{item.icon}}</view>
-          <view class="rec-body">
-            <text class="rec-name">{{item.name}}</text>
-            <text class="rec-desc">{{item.desc}}</text>
-            <view class="rec-tags" wx:if="{{item.tagsShow.length > 0}}">
-              <text wx:for="{{item.tagsShow}}" wx:for-item="tag" wx:key="*this" class="rec-tag">{{tag}}</text>
-            </view>
-            <view class="rec-foot">
-              <text class="rec-price">{{item.price}}</text>
-              <text class="rec-sales">月销 {{item.monthSales}}</text>
-              <view class="rec-add" catchtap="increaseQuantity" data-id="{{item.id}}">＋</view>
-            </view>
-          </view>
-        </view>
-      </scroll-view>
-    </view>
-  </view>
-
-  <!-- 3. 中间分类与菜品列表 -->
+  <!-- 2. 中间分类与菜品列表 -->
   <view class="main-body">
     <scroll-view scroll-y class="category-sidebar">
       <block wx:for="{{categories}}" wx:key="index">
@@ -190,8 +62,7 @@
             <view class="info">
               <text class="name">{{item.name}}</text>
               <text class="price">奖励: {{item.price}}</text>
-              <text class="month-sales {{item.soldOut ? 'sold' : ''}}">月销 {{item.monthSales}} ·
-                {{item.stockText}}</text>
+              <text class="month-sales {{item.soldOut ? 'sold' : ''}}">月销 {{item.monthSales}} · {{item.stockText}}</text>
               <text class="dish-desc" wx:if="{{item.descShow}}">{{item.descShow}}</text>
               <view class="dish-tags" wx:if="{{item.tagsShow.length > 0}}">
                 <text wx:for="{{item.tagsShow}}" wx:for-item="tag" wx:key="*this" class="dish-tag">{{tag}}</text>

@@ -19,7 +19,7 @@ page {
 .header {
   position: relative;
   width: 100%;
-  height: 240rpx;
+  height: 180rpx;
   background-color: #fff2e8;
   background-size: cover;
   background-position: center;
@@ -44,7 +44,7 @@ page {
 }
 
 .title {
-  font-size: 38rpx;
+  font-size: 34rpx;
   font-weight: bold;
   color: #ff8c00;
   display: block;
@@ -52,7 +52,7 @@ page {
 
 .subtitle {
   font-size: 22rpx;
-  color: #666;
+  color: #999;
   margin-top: 6rpx;
   display: block;
 }
@@ -137,27 +137,27 @@ page {
   border: 2rpx solid #ffd8b3;
 }
 
-/* 搜索结果行新增展示：图片 / 描述 / 标签 / 库存 */
+/* 搜索结果行新增展示 */
 .dish-img {
-  width: 88rpx;
-  height: 88rpx;
-  border-radius: 12rpx;
-  margin-right: 15rpx;
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 10rpx;
+  margin-right: 14rpx;
   flex-shrink: 0;
 }
 
 .dish-desc {
   font-size: 20rpx;
   color: #999999;
-  margin-top: 4rpx;
+  margin-top: 2rpx;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: 400rpx;
+  max-width: 320rpx;
 }
 
 .dish-tags {
-  margin-top: 6rpx;
+  margin-top: 4rpx;
 }
 
 .dish-tag {
@@ -179,141 +179,6 @@ page {
   color: #ff4d4f;
 }
 
-/* 推荐区域（横向滑动卡片，数量封顶不会无限增长） */
-.rec-area {
-  background-color: #ffffff;
-  border-bottom: 1rpx solid #f0f0f0;
-}
-
-.rec-section {
-  padding: 20rpx 0 4rpx;
-}
-
-.rec-header {
-  display: flex;
-  align-items: baseline;
-  padding: 0 24rpx 14rpx;
-}
-
-.rec-title {
-  font-size: 30rpx;
-  font-weight: bold;
-  color: #333333;
-  margin-right: 14rpx;
-}
-
-.rec-sub {
-  font-size: 20rpx;
-  color: #ff8c00;
-}
-
-.rec-scroll {
-  white-space: nowrap;
-  width: 100%;
-  padding-left: 24rpx;
-  box-sizing: border-box;
-}
-
-.rec-card {
-  display: inline-block;
-  width: 280rpx;
-  background: #fffaf5;
-  border: 2rpx solid #ffd8b3;
-  border-radius: 16rpx;
-  margin-right: 20rpx;
-  overflow: hidden;
-  vertical-align: top;
-  white-space: normal;
-}
-
-.rec-img {
-  width: 100%;
-  height: 160rpx;
-  background: #fff2e8;
-  display: block;
-}
-
-.rec-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 80rpx;
-}
-
-.rec-body {
-  padding: 14rpx 16rpx 16rpx;
-}
-
-.rec-name {
-  font-size: 28rpx;
-  font-weight: 600;
-  color: #222222;
-  display: block;
-}
-
-.rec-desc {
-  font-size: 20rpx;
-  color: #999999;
-  display: block;
-  margin-top: 6rpx;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-}
-
-.rec-tags {
-  margin-top: 8rpx;
-}
-
-.rec-tag {
-  display: inline-block;
-  font-size: 18rpx;
-  color: #ff8c00;
-  background: #fff5eb;
-  border: 2rpx solid #ffd8b3;
-  border-radius: 14rpx;
-  padding: 2rpx 12rpx;
-  margin-right: 8rpx;
-}
-
-.rec-foot {
-  display: flex;
-  align-items: center;
-  margin-top: 10rpx;
-}
-
-.rec-price {
-  font-size: 22rpx;
-  color: #ff8c00;
-  font-weight: 600;
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.rec-sales {
-  font-size: 18rpx;
-  color: #bbbbbb;
-  margin-right: 10rpx;
-}
-
-.rec-add {
-  width: 44rpx;
-  height: 44rpx;
-  line-height: 40rpx;
-  text-align: center;
-  border-radius: 50%;
-  background: #ff8c00;
-  color: #ffffff;
-  font-size: 30rpx;
-  font-weight: bold;
-  box-sizing: border-box;
-  flex-shrink: 0;
-}
-
 .main-body {
   flex: 1;
   width: 100%;
@@ -322,24 +187,38 @@ page {
 }
 
 .category-sidebar {
-  width: 160rpx;
-  background-color: #f0f0f0;
+  width: 180rpx;
+  background-color: #f5f5f5;
   height: 100%;
 }
 
 .category-item {
-  padding: 30rpx 10rpx;
+  padding: 34rpx 12rpx;
   text-align: center;
-  font-size: 26rpx;
+  font-size: 28rpx;
   color: #666;
-  border-bottom: 1rpx solid #e0e0e0;
+  border-bottom: 1rpx solid #e8e8e8;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .category-item.active {
   background-color: #ffffff;
   color: #ff8c00;
   font-weight: bold;
-  border-left: 6rpx solid #ff8c00;
+}
+
+.category-item.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 20%;
+  height: 60%;
+  width: 6rpx;
+  background: #ff8c00;
+  border-radius: 0 3rpx 3rpx 0;
 }
 
 .menu-list {
@@ -354,8 +233,8 @@ page {
   justify-content: space-between;
   align-items: center;
   background: #fff;
-  padding: 20rpx;
-  margin-bottom: 20rpx;
+  padding: 16rpx 18rpx;
+  margin-bottom: 14rpx;
   border-radius: 16rpx;
   box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
 }
@@ -367,13 +246,31 @@ page {
 }
 
 .icon {
-  font-size: 44rpx;
-  margin-right: 15rpx;
+  font-size: 36rpx;
+  margin-right: 14rpx;
+  flex-shrink: 0;
 }
 
 .info {
   display: flex;
   flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #222222;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.price {
+  font-size: 22rpx;
+  color: #ff8c00;
+  margin-top: 4rpx;
 }
 
 /* 菜品卡片月销 */
@@ -381,29 +278,18 @@ page {
   font-size: 20rpx;
   color: #999999;
   margin-top: 4rpx;
-}
-
-.name {
-  font-size: 34rpx;
-  font-weight: 600;
-  color: #222222;
-}
-
-.price {
-  font-size: 22rpx;
-  color: #ff8c00;
-  margin-top: 6rpx;
+  white-space: nowrap;
 }
 
 .btn-select {
   margin: 0 !important;
   padding: 0 !important;
-  width: 52rpx !important;
-  min-width: 52rpx !important;
-  height: 52rpx !important;
-  line-height: 48rpx !important;
+  width: 46rpx !important;
+  min-width: 46rpx !important;
+  height: 46rpx !important;
+  line-height: 42rpx !important;
   text-align: center;
-  font-size: 36rpx;
+  font-size: 32rpx;
   font-weight: bold;
   border-radius: 50%;
   background-color: #2e7d32 !important;
@@ -417,12 +303,12 @@ page {
 }
 
 .step-btn {
-  width: 48rpx;
-  height: 48rpx;
-  line-height: 44rpx;
+  width: 42rpx;
+  height: 42rpx;
+  line-height: 38rpx;
   text-align: center;
   border-radius: 50%;
-  font-size: 30rpx;
+  font-size: 28rpx;
   font-weight: bold;
   box-sizing: border-box;
 }
@@ -439,9 +325,9 @@ page {
 }
 
 .step-num {
-  min-width: 56rpx;
+  min-width: 48rpx;
   text-align: center;
-  font-size: 30rpx;
+  font-size: 26rpx;
   font-weight: bold;
   color: #ff8c00;
 }

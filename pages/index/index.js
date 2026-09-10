@@ -349,9 +349,11 @@ Page({
   updateFilteredList() {
     let list = this.data.menuList;
     const { activeCategory, searchKey, cartMap } = this.data;
+    const hasSearch = searchKey.trim() !== '';
+    let newCategory = activeCategory;
 
     // 1. 分类筛选
-    if (activeCategory !== '全部') {
+    if (!hasSearch && activeCategory !== '全部') {
       list = list.filter(item => item.category === activeCategory);
     }
 
@@ -364,6 +366,11 @@ Page({
           .map(field => String(field || '').toLowerCase());
         return keywords.every(k => haystack.some(h => h.indexOf(k) > -1));
       });
+
+      // 搜索时自动切换到第一个结果所属的分类
+      if (list.length > 0 && list[0].category !== activeCategory) {
+        newCategory = list[0].category;
+      }
     }
 
     // 3. 附上购物车数量 / 月销 / 描述 / 标签 / 库存（生成新对象，避免污染原始菜单数据）
@@ -384,7 +391,7 @@ Page({
       };
     });
 
-    this.setData({ filteredMenuList });
+    this.setData({ filteredMenuList, activeCategory: newCategory });
   },
 
   // ---- 搜索历史与热门搜索 ----

@@ -180,6 +180,7 @@ Page({
 
             // 把后端菜品转换成当前首页需要的数据结构
             const menuList = dishes.map(item => {
+              console.log('后端原始菜品:', item);
               const priceNumber = Number(item.price);
 
               return {
@@ -192,9 +193,11 @@ Page({
                 categoryId: item.category_id,
 
                 // 当前后端使用真实金额
-                price: Number.isNaN(priceNumber)
-                  ? '¥0.00'
-                  : `¥${priceNumber.toFixed(2)}`,
+                // 奖励文字
+                rewardText: item.reward_text || '',
+
+                // 保留原来的显示字段
+                price: item.reward_text || item.rewardText || `¥${priceNumber.toFixed(2)}`,
 
                 amount: Number.isNaN(priceNumber)
                   ? 0
@@ -245,6 +248,10 @@ Page({
               categoryNames.indexOf(currentCategory) > -1
                 ? currentCategory
                 : '全部';
+
+            console.log('后端转换后的菜单:', menuList);
+
+            writeArray(KEYS.MENU_LIST, menuList);
 
             this.setData({
               categories: ['全部', ...categoryNames],
@@ -880,17 +887,25 @@ Page({
       )
         .map(item => ({
           ...item,
+
+          // 金额字段统一处理
+          // 文案奖励（如：需要一个拥抱、洗碗一次）不参与金额计算
+          amount:
+            Number.isFinite(Number(item.amount))
+              ? Number(item.amount)
+              : 0,
+
           quantity:
             this.toQuantity(
               item.quantity
             ),
+
           checked:
             item.checked !== false
         }))
         .filter(item =>
           item.quantity > 0
         );
-
     // cartMap
     const cartMap = {};
 
@@ -1330,19 +1345,27 @@ Page({
         );
     } else {
       // 首次加入购物车
+      // 首次加入购物车
       cart = [
         ...this.data.cart,
         {
           id: dish.id,
           name: dish.name,
-          price: dish.price,
+          // 用户看到的奖励内容
+          price:
+            dish.rewardText || dish.price,
+          rewardText:
+            dish.rewardText || dish.price,
+          // 保留真实金额计算
           amount:
             getItemAmount(dish),
           category:
             dish.category,
-          icon: dish.icon,
+          icon:
+            dish.icon,
           image:
             dish.image,
+          // 数量
           quantity: 1
         }
       ];

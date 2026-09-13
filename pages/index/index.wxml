@@ -61,7 +61,7 @@
             <text wx:else class="icon">{{item.icon}}</text>
             <view class="info">
               <text class="name">{{item.name}}</text>
-              <text class="price">奖励: {{item.price}}</text>
+              <text class="price">奖励: {{item.rewardText}}</text>
               <text class="month-sales {{item.soldOut ? 'sold' : ''}}">月销 {{item.monthSales}} · {{item.stockText}}</text>
               <text class="dish-desc" wx:if="{{item.descShow}}">{{item.descShow}}</text>
               <view class="dish-tags" wx:if="{{item.tagsShow.length > 0}}">
@@ -114,7 +114,7 @@
               <text class="popup-icon">{{item.icon}}</text>
               <view class="popup-info">
                 <text class="popup-name">{{item.name}}</text>
-                <text class="popup-price">奖励: {{item.price}}</text>
+                <text class="popup-price">奖励: {{item.rewardText}}</text>
               </view>
             </view>
             <view class="popup-item-right">

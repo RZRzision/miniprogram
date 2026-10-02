@@ -2,6 +2,8 @@ const { KEYS, readArray, writeArray, getItemAmount } = require('../../utils/stor
 const { normalizeStatus, canCancel, statusCls } = require('../../utils/order-status.js');
 const { restoreStock } = require('../../utils/stock.js');
 
+const API_BASE_URL = 'http://123.207.245.251:3000';
+
 Page({
   data: {
     orders: []
@@ -11,49 +13,128 @@ Page({
     this.loadOrders();
   },
 
-  loadOrders() {
-    const orders = readArray(KEYS.USER_ORDERS);
-    // 时间按早到晚升序排列
-    orders.sort((a, b) => a.id - b.id);
-    // 兼容旧数据：没有 quantity / tasteRemark / status 字段的订单正常展示，不报错
-    const normalizedOrders = orders.map(order => {
-      const items = Array.isArray(order.items)
-        ? order.items.map(dish => ({
-            ...dish,
-            quantity: (typeof dish.quantity === 'number' && dish.quantity > 0) ? dish.quantity : 1
-          }))
-        : [];
-      const totalCount = items.reduce((sum, dish) => sum + dish.quantity, 0);
-      // 订单金额：仅数值奖励可解析（文案型奖励不计入）；用于「记一笔」快照预填与金额展示
-      const amount = items.reduce((sum, dish) => sum + getItemAmount(dish) * dish.quantity, 0);
-      const timeStr = typeof order.time === 'string' ? order.time : '';
-      // 状态归一化：老订单无 status 按“待接单”处理，徽章样式与可取消性一并给出
-      const status = normalizeStatus(order);
-      return {
-        ...order,
-        items,
-        totalCount,
-        amount,
-        date: timeStr.slice(0, 10),      // 'YYYY-MM-DD'，供日记/账单预填
-        timeOfDay: timeStr.slice(11, 16),// 'HH:mm'
-        tasteRemark: typeof order.tasteRemark === 'string' ? order.tasteRemark : '',
-        status,
-        statusCls: statusCls(status),
-        canCancel: canCancel(status)
-      };
-    });
-    this.setData({ orders: normalizedOrders });
+
+  async loadOrders() {
+    wx.showLoading({ title: '加载订单中...' });
+
+    try {
+      // 先获取服务器订单列表
+      const listRes = await new Promise((resolve, reject) => {
+        wx.request({
+          url: `${API_BASE_URL}/api/orders`,
+          method: 'GET',
+          success: resolve,
+          fail: reject
+        });
+      });
+
+      if (
+        listRes.statusCode !== 200 ||
+        !listRes.data ||
+        !listRes.data.success
+      ) {
+        throw new Error('获取订单列表失败');
+      }
+
+      const serverOrders = listRes.data.data || [];
+
+      // 列表接口不包含菜品详情，逐个获取订单详情
+      const ordersWithDetails = await Promise.all(
+        serverOrders.map(async order => {
+          const detailRes = await new Promise((resolve, reject) => {
+            wx.request({
+              url: `${API_BASE_URL}/api/orders/${order.id}`,
+              method: 'GET',
+              success: resolve,
+              fail: reject
+            });
+          });
+
+          if (
+            detailRes.statusCode !== 200 ||
+            !detailRes.data ||
+            !detailRes.data.success
+          ) {
+            throw new Error(`订单 ${order.id} 详情获取失败`);
+          }
+
+          const detail = detailRes.data.data;
+          const items = (detail.items || []).map(item => ({
+            id: item.dish_id,
+            name: item.dish_name,
+            price: Number(item.price),
+            quantity: Number(item.quantity) || 1,
+            subtotal: Number(item.subtotal)
+          }));
+
+          const createdAt = detail.created_at
+            ? new Date(detail.created_at)
+            : new Date();
+
+          const pad = n => String(n).padStart(2, '0');
+          const timeStr =
+            `${createdAt.getFullYear()}-${pad(createdAt.getMonth() + 1)}-${pad(createdAt.getDate())} ` +
+            `${pad(createdAt.getHours())}:${pad(createdAt.getMinutes())}`;
+
+          return {
+            ...detail,
+            id: detail.id,
+            time: timeStr,
+            items,
+            totalCount: items.reduce(
+              (sum, item) => sum + item.quantity,
+              0
+            ),
+            amount: Number(detail.total_amount) || 0,
+            tasteRemark: detail.remark || ''
+          };
+        })
+      );
+
+      // 早的订单在前，晚的订单在后
+      ordersWithDetails.sort((a, b) => a.id - b.id);
+
+      const normalizedOrders = ordersWithDetails.map(order => {
+        const status = normalizeStatus(order);
+
+        return {
+          ...order,
+          date: order.time.slice(0, 10),
+          timeOfDay: order.time.slice(11, 16),
+          status,
+          statusCls: statusCls(status),
+          canCancel: canCancel(status)
+        };
+      });
+
+      this.setData({ orders: normalizedOrders });
+    } catch (error) {
+      console.error('加载服务器订单失败：', error);
+      wx.showToast({
+        title: '订单加载失败，请检查网络',
+        icon: 'none'
+      });
+    } finally {
+      wx.hideLoading();
+    }
   },
 
   // 用户端：取消自己的订单（仅出餐前可取消；状态流转规则见 utils/order-status.js）
   // 取消时若订单已扣减库存（stockSettled 标记），自动回补库存（标志保证只回补一次）
+
   cancelOrder(e) {
     const id = e.currentTarget.dataset.id;
-    const target = this.data.orders.find(o => String(o.id) === String(id));
+    const target = this.data.orders.find(
+      o => String(o.id) === String(id)
+    );
+
     if (!target) return;
 
     if (!target.canCancel) {
-      wx.showToast({ title: '当前状态不可取消', icon: 'none' });
+      wx.showToast({
+        title: '当前状态不可取消',
+        icon: 'none'
+      });
       return;
     }
 
@@ -62,17 +143,52 @@ Page({
       content: '确定取消该订单吗？',
       confirmColor: '#ff4d4f',
       success: (res) => {
-        if (res.confirm) {
-          const fresh = readArray(KEYS.USER_ORDERS);
-          const targetOrder = fresh.find(o => String(o.id) === String(id));
-          if (targetOrder && targetOrder.stockSettled === true) {
-            restoreStock(Array.isArray(targetOrder.items) ? targetOrder.items : []);
+        if (!res.confirm) return;
+
+        wx.showLoading({ title: '正在取消...' });
+
+        wx.request({
+          url: `${API_BASE_URL}/api/orders/${id}/cancel`,
+          method: 'PATCH',
+          header: {
+            'content-type': 'application/json'
+          },
+          data: {
+            status: 5
+          },
+          success: (response) => {
+            const result = response.data;
+
+            if (
+              response.statusCode === 200 &&
+              result &&
+              result.success
+            ) {
+              wx.showToast({
+                title: '已取消订单',
+                icon: 'success'
+              });
+
+              // 重新从服务器加载，显示最新状态
+              this.loadOrders();
+            } else {
+              wx.showToast({
+                title: result?.message || '取消失败',
+                icon: 'none',
+                duration: 2500
+              });
+            }
+          },
+          fail: () => {
+            wx.showToast({
+              title: '网络连接失败',
+              icon: 'none'
+            });
+          },
+          complete: () => {
+            wx.hideLoading();
           }
-          const orders = fresh.map(o => (String(o.id) === String(id) ? { ...o, status: '已取消', stockSettled: false } : o));
-          writeArray(KEYS.USER_ORDERS, orders);
-          this.loadOrders();
-          wx.showToast({ title: '已取消订单', icon: 'none' });
-        }
+        });
       }
     });
   },
@@ -80,22 +196,41 @@ Page({
   // 删除特定订单
   // 月销为派生统计：已出单订单删除后其贡献自动消失；未出单订单删除不影响月销
   // 库存按订单实际状态决定：已扣减（stockSettled）→ 删除前回补；未扣减 → 不动库存
-  deleteOrder(e) {
+  async deleteOrder(e) {
     const id = e.currentTarget.dataset.id;
+
     wx.showModal({
-      title: '提示',
-      content: '确定要删除这条订单记录吗？',
-      confirmColor: '#ff4d4f',
-      success: (res) => {
-        if (res.confirm) {
-          const fresh = readArray(KEYS.USER_ORDERS);
-          const targetOrder = fresh.find(o => String(o.id) === String(id));
-          if (targetOrder && targetOrder.stockSettled === true) {
-            restoreStock(Array.isArray(targetOrder.items) ? targetOrder.items : []);
+      title: '删除订单',
+      content: '确定删除这条订单记录吗？',
+      success: async (res) => {
+        if (!res.confirm) return;
+
+        wx.showLoading({ title: '删除中' });
+
+        try {
+          const result = await new Promise((resolve, reject) => {
+            wx.request({
+              url: `${API_BASE_URL}/api/orders/${id}/delete`,
+              method: 'PATCH',
+              success: resolve,
+              fail: reject
+            });
+          });
+
+          if (result.statusCode === 200 && result.data.success) {
+            wx.showToast({ title: '删除成功', icon: 'success' });
+            await this.loadOrders();
+          } else {
+            wx.showToast({
+              title: result.data.message || '删除失败',
+              icon: 'none'
+            });
           }
-          writeArray(KEYS.USER_ORDERS, fresh.filter(o => String(o.id) !== String(id)));
-          this.loadOrders();
-          wx.showToast({ title: '已删除订单', icon: 'success' });
+        } catch (error) {
+          console.error('删除订单失败：', error);
+          wx.showToast({ title: '网络请求失败', icon: 'none' });
+        } finally {
+          wx.hideLoading();
         }
       }
     });

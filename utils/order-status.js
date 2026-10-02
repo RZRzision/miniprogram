@@ -21,7 +21,23 @@ function isValidStatus(status) {
 
 // 归一化：老订单没有 status 字段、或存了非法值时按“待接单”处理，不报错
 function normalizeStatus(order) {
-  const status = order && typeof order.status === 'string' ? order.status : '';
+  const status = order && order.status;
+
+  // 兼容服务器返回的数字状态
+  const statusMap = {
+    0: '待接单',
+    1: '已接单',
+    2: '制作中',
+    3: '已出单',
+    4: '已完成',
+    5: '已取消'
+  };
+
+  if (typeof status === 'number') {
+    return statusMap[status] || '待接单';
+  }
+
+  // 兼容本地旧订单的中文状态
   return isValidStatus(status) ? status : '待接单';
 }
 

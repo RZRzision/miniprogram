@@ -1,6 +1,8 @@
 const { KEYS, readArray, readObject, writeArray, toAmount, getItemAmount } = require('../../utils/storage.js');
 const { deductStock, restoreStock } = require('../../utils/stock.js');
 
+const API_BASE_URL = 'http://123.207.245.251:3000';
+
 // 结算页口味快捷标签（可多选，与自定义备注合并保存）
 const TASTE_TAGS = ['微辣', '中辣', '少油', '少盐', '不加香菜', '不加葱', '其他'];
 const REMARK_SEPARATORS = /[，,、;；\s]+/;
@@ -136,130 +138,153 @@ Page({
   },
 
   // 提交订单：防连续点击；下单前重新校验库存/上下架；扣减库存；写入成功才清理购物车
-  submitOrder() {
+
+  async submitOrder() {
     if (this.data.submitting) return;
+
     if (this.data.loadError || this.data.items.length === 0) {
       wx.showToast({ title: '没有可结算的菜品', icon: 'none' });
       return;
     }
+
     this.setData({ submitting: true });
 
-    // 结算前重新校验（库存 / 上下架可能在填写期间发生变化），只保留可结算项
     const revalidated = this.validateItems(this.data.items);
-    const validItems = revalidated.filter(i => !i.invalid).map(i => ({
-      id: i.id,
-      name: i.name,
-      price: i.price,
-      amount: i.amount,
-      icon: i.icon,
-      quantity: i.quantity,
-      priceNum: i.priceNum,
-      subtotal: i.subtotal
-    }));
-    const invalidTip = revalidated.filter(i => i.invalid).map(i => `${i.name}（${i.invalidReason}）`).join('、');
+    const validItems = revalidated
+      .filter(i => !i.invalid)
+      .map(i => ({
+        id: i.id,
+        name: i.name,
+        price: i.price,
+        quantity: i.quantity,
+        subtotal: i.subtotal
+      }));
+
+    const invalidTip = revalidated
+      .filter(i => i.invalid)
+      .map(i => `${i.name}（${i.invalidReason}）`)
+      .join('、');
 
     if (validItems.length === 0) {
       this.setData({ submitting: false });
-      wx.showToast({ title: '没有可结算的菜品，请返回调整', icon: 'none' });
+      wx.showToast({
+        title: '没有可结算的菜品，请返回调整',
+        icon: 'none'
+      });
       return;
     }
 
-    let stockDeducted = false;   // 库存是否已扣减（订单写入失败时用于回补）
-    let orderWritten = false;    // 订单是否已写入（写入后不再回补）
-    try {
-      const orders = readArray(KEYS.USER_ORDERS);
-      // 订单 id：时间戳撞号时递增，保证唯一且单调（排序/删除/关联依赖唯一 id）
-      let orderId = Date.now();
-      while (orders.some(o => Number(o.id) === orderId)) {
-        orderId += 1;
-      }
+    const { diningMode, tableNo, tasteRemark } = this.data;
 
-      const now = new Date();
-      const timeStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    // 服务器暂时只保存一段备注，将就餐信息和口味要求合并
+    const remarkParts = [];
 
-      const { diningMode, tableNo, tasteRemark } = this.data;
-      const totalCount = validItems.reduce((sum, i) => sum + i.quantity, 0);
-      const originalAmount = toAmount(validItems.reduce((sum, i) => sum + i.subtotal, 0));
-      const discount = Math.min(this.data.discount, originalAmount);
-      const payable = toAmount(originalAmount - discount);
-
-      // 完整订单快照（stockSettled 标记库存已扣减：取消/删除时据此回补，且只回补一次）
-      const newOrder = {
-        id: orderId,
-        time: timeStr,
-        items: validItems,
-        totalCount,
-        originalAmount,
-        discount,
-        payable,
-        diningMode,
-        tableNo,
-        tasteRemark: (tasteRemark || '').trim(),
-        stockSettled: true
-      };
-
-      // 营业设置「自动接单」开启时，新订单跳过待接单直接进入已接单
-      const settings = readObject(KEYS.SETTINGS, {});
-      if (settings.autoAccept === true) {
-        newOrder.status = '已接单';
-      }
-
-      // 扣减库存：先扣库存再写订单；
-      // 订单写入失败时在 catch 中回补库存，避免库存被扣但订单不存在
-      deductStock(validItems);
-      stockDeducted = true;
-
-      // 采用 push 方式追加，早的订单在前面，晚的在后面
-      orders.push(newOrder);
-      writeArray(KEYS.USER_ORDERS, orders);
-      orderWritten = true;
-
-      // 写入成功后才通知点餐页清理：只移除已购买的菜品（校验未通过的留在购物车）
-      const purchasedIds = validItems.map(i => i.id);
-      if (this.indexPage && typeof this.indexPage.completeCheckout === 'function') {
-        this.indexPage.completeCheckout(purchasedIds);
-      }
-
-      // 复制清单文本（体现数量与支付信息）
-      const menuNames = validItems.map(i => `• ${i.name} × ${i.quantity} (奖励: ${i.price})`).join('\n');
-      const modeText = diningMode === '堂食' && tableNo ? `堂食 ${tableNo}号桌` : diningMode;
-      const lines = [`【今日晚餐点单】`, menuNames];
-      if (payable > 0) {
-        lines.push(`实付：¥${payable}（${modeText}${discount > 0 ? '，已优惠 ¥' + discount : ''}）`);
-      }
-      if (invalidTip) {
-        lines.push(`⚠️ 未结算：${invalidTip}`);
-      }
-      lines.push('', '大厨请准备接单！❤️');
-      const orderText = lines.join('\n');
-
-      wx.showModal({
-        title: '下单成功！',
-        content: orderText,
-        confirmText: '复制清单',
-        cancelText: '我知道了',
-        success: (res) => {
-          if (res.confirm) {
-            wx.setClipboardData({
-              data: orderText,
-              success: () => {
-                wx.showToast({ title: '已复制清单！' });
-              }
-            });
-          }
-        },
-        complete: () => {
-          wx.navigateBack();
-        }
-      });
-    } catch (e) {
-      // 订单创建失败：回补已扣库存（订单未写入时），不清空购物车，恢复按钮允许重试
-      if (stockDeducted && !orderWritten) {
-        restoreStock(validItems);
-      }
-      this.setData({ submitting: false });
-      wx.showToast({ title: '下单失败，请重试', icon: 'none' });
+    if (diningMode === '堂食' && tableNo) {
+      remarkParts.push(`堂食 ${tableNo}号桌`);
+    } else if (diningMode) {
+      remarkParts.push(diningMode);
     }
+
+    if (tasteRemark && tasteRemark.trim()) {
+      remarkParts.push(tasteRemark.trim());
+    }
+
+    const remark = remarkParts.join('；');
+
+    // 注意：库存和金额都由服务器负责处理
+    wx.request({
+      url: `${API_BASE_URL}/api/orders`,
+      method: 'POST',
+      header: {
+        'content-type': 'application/json'
+      },
+      data: {
+        items: validItems.map(i => ({
+          dish_id: Number(i.id),
+          quantity: Number(i.quantity)
+        })),
+        remark
+      },
+      success: (res) => {
+        const result = res.data;
+
+        if (res.statusCode !== 201 || !result || !result.success) {
+          this.setData({ submitting: false });
+          wx.showToast({
+            title: result?.message || '下单失败，请重试',
+            icon: 'none',
+            duration: 2500
+          });
+          return;
+        }
+
+        const serverOrder = result.data;
+        const totalAmount = Number(serverOrder.total_amount).toFixed(2);
+
+        // 服务器创建成功后，才清理已购买的菜品
+        const purchasedIds = validItems.map(i => i.id);
+
+        if (
+          this.indexPage &&
+          typeof this.indexPage.completeCheckout === 'function'
+        ) {
+          this.indexPage.completeCheckout(purchasedIds);
+        }
+
+        const menuNames = serverOrder.items
+          .map(i => `• ${i.dish_name} × ${i.quantity}`)
+          .join('\n');
+
+        const modeText =
+          diningMode === '堂食' && tableNo
+            ? `堂食 ${tableNo}号桌`
+            : diningMode;
+
+        const lines = [
+          '【今日晚餐点单】',
+          menuNames,
+          `订单号：${serverOrder.order_no}`,
+          `订单金额：¥${totalAmount}`,
+          modeText
+        ];
+
+        if (invalidTip) {
+          lines.push(`⚠️ 未结算：${invalidTip}`);
+        }
+
+        lines.push('', '大厨请准备接单！❤️');
+
+        const orderText = lines.join('\n');
+
+        wx.showModal({
+          title: '下单成功！',
+          content: orderText,
+          confirmText: '复制清单',
+          cancelText: '我知道了',
+          success: (modalRes) => {
+            if (modalRes.confirm) {
+              wx.setClipboardData({
+                data: orderText,
+                success: () => {
+                  wx.showToast({ title: '已复制清单！' });
+                }
+              });
+            }
+          },
+          complete: () => {
+            wx.navigateBack();
+          }
+        });
+      },
+      fail: () => {
+        this.setData({ submitting: false });
+        wx.showToast({
+          title: '网络连接失败，请检查网络',
+          icon: 'none',
+          duration: 2500
+        });
+      }
+    });
   },
 
   // 失效态：返回点餐页
